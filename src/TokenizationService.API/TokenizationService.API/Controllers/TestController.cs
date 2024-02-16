@@ -4,30 +4,26 @@ namespace TokenizationService.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class ProxyController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<ProxyController> logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public ProxyController(ILogger<ProxyController> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet(Name = "Read")]
+        public async Task<ActionResult<object>> Detokenize()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return Ok();
+        }
+
+        [HttpPost()]
+        public async Task<ActionResult<object>> Tokenize()
+        {
+
         }
     }
 }
