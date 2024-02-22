@@ -22,6 +22,8 @@ namespace TokenizationService.API.Repositories
                 ('*-{entity.Token}-*', '{entity.Value}')";
 
             var result = command.BeginExecuteNonQuery();
+
+            return null;
         }
 
         public Task<TokenObject> ReadAsync(string id)

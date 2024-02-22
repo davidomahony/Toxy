@@ -5,6 +5,10 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Core.API", "TokenizationService.API\TokenizationService.Core.API.csproj", "{DE7CEFA1-65B5-4A66-9139-20C6F5F1FE09}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Dto", "TokenizationService.Dto\TokenizationService.Dto.csproj", "{6D382BDA-1C69-4718-80B3-6B5B395F17D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Proxy", "..\Toxy.Proxy\TokenizationService.Proxy.csproj", "{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{DE7CEFA1-65B5-4A66-9139-20C6F5F1FE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE7CEFA1-65B5-4A66-9139-20C6F5F1FE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE7CEFA1-65B5-4A66-9139-20C6F5F1FE09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D382BDA-1C69-4718-80B3-6B5B395F17D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D382BDA-1C69-4718-80B3-6B5B395F17D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D382BDA-1C69-4718-80B3-6B5B395F17D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D382BDA-1C69-4718-80B3-6B5B395F17D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

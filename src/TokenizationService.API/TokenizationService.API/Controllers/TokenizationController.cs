@@ -7,7 +7,6 @@ namespace TokenizationService.API.Controllers
     [Route("[controller]")]
     public class TokenizationController : ControllerBase
     {
-
         private readonly ILogger<TokenizationController> logger;
 
         public TokenizationController(ILogger<TokenizationController> logger)
@@ -18,13 +17,39 @@ namespace TokenizationService.API.Controllers
         [HttpGet(Name = nameof(Detokenize))]
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
-            return Ok();
+            var result = detokenizationRequest.DetokenizationRequestInformation.Select(
+                itm => new DetokenizationInformation()
+                {
+                    Identifier = itm.Identifier,
+                    Value = "clear",
+                });
+
+
+            var dummy = new DetokenizationResponse()
+            {
+                DetokenizationResults = result.ToArray()
+            };
+
+            return Ok(dummy);
         }
 
         [HttpPost(Name = nameof(Tokenize))]
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
-            return Ok();
+            var result = tokenizationRequest.TokenizationRequestInformation.Select(
+                itm => new TokenizationInformation()
+                {
+                    Identifier = itm.Identifier,
+                    Value = "token",
+                });
+
+
+            var dummy = new TokenizationResponse()
+            {
+                TokenizationResults = result.ToArray()
+            };
+
+            return Ok(dummy);
         }
     }
 }

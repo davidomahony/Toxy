@@ -2,6 +2,6 @@
 {
     public class TokenizationResponse
     {
-        public TokenizationInformation[] TokenizationResponseInformation { get; set; }
+        public TokenizationInformation[] TokenizationResults { get; set; }
     }
 }
