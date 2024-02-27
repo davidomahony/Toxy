@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using TokenizationService.API.Repositories;
 using TokenizationService.Core.API.Models;
+using TokenizationService.Core.API.Services;
 
 namespace TokenizationService.API.Controllers
 {
@@ -8,9 +10,11 @@ namespace TokenizationService.API.Controllers
     public class TokenizationController : ControllerBase
     {
         private readonly ILogger<TokenizationController> logger;
+        private readonly IEngineService engineService;
 
-        public TokenizationController(ILogger<TokenizationController> logger)
+        public TokenizationController(ILogger<TokenizationController> logger, IEngineService engineService)
         {
+            this.engineService = engineService;
             this.logger = logger;
         }
 
@@ -23,7 +27,6 @@ namespace TokenizationService.API.Controllers
                     Identifier = itm.Identifier,
                     Value = "clear",
                 });
-
 
             var dummy = new DetokenizationResponse()
             {
