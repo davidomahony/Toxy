@@ -21,38 +21,55 @@ namespace TokenizationService.API.Controllers
         [HttpGet(Name = nameof(Detokenize))]
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
-            var result = detokenizationRequest.DetokenizationRequestInformation.Select(
-                itm => new DetokenizationInformation()
-                {
-                    Identifier = itm.Identifier,
-                    Value = "clear",
-                });
+            // Validate request
+            if (ValidateDetokenizationRequest(detokenizationRequest))
+                return BadRequest();
 
-            var dummy = new DetokenizationResponse()
+            // Generate tokens
+            var tokenResults = await this.engineService.FetchTokenValuesAsync(detokenizationRequest.DetokenizationRequestInformation);
+
+            // Build response
+            var response = new DetokenizationResponse()
             {
-                DetokenizationResults = result.ToArray()
+                DetokenizationResults = tokenResults.ToArray()
             };
 
-            return Ok(dummy);
+            return Ok(response);
         }
 
         [HttpPost(Name = nameof(Tokenize))]
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
-            var result = tokenizationRequest.TokenizationRequestInformation.Select(
-                itm => new TokenizationInformation()
-                {
-                    Identifier = itm.Identifier,
-                    Value = "token",
-                });
+            // Validate requests
+            if (ValidateTokenizationRequest(tokenizationRequest))
+                return BadRequest();
 
+            // Generate tokens
+            var tokenResults = await this.engineService.FetchTokensAsync(tokenizationRequest.TokenizationRequestInformation);
 
-            var dummy = new TokenizationResponse()
+            // Build response
+            var response = new TokenizationResponse()
             {
-                TokenizationResults = result.ToArray()
+                TokenizationResults = tokenResults.ToArray()
             };
 
-            return Ok(dummy);
+            return Ok(response);
         }
+
+        private bool ValidateDetokenizationRequest(DetokenizationRequest detokenizationInformation)
+        {
+
+
+            return true;
+        }
+
+        private bool ValidateTokenizationRequest(TokenizationRequest tokenizationRequest)
+        {
+
+
+            return true;
+        }
+
+
     }
 }
