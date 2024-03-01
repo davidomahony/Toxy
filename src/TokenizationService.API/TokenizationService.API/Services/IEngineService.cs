@@ -5,7 +5,7 @@ namespace TokenizationService.Core.API.Services
 {
     public interface IEngineService
     {
-        Task<TokenizationInformation[]> FetchTokensAsync(TokenizationInformation[] values);
+        Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values);
 
         Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens);
     }

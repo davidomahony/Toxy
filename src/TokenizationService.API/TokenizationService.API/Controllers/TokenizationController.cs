@@ -45,7 +45,7 @@ namespace TokenizationService.API.Controllers
                 return BadRequest();
 
             // Generate tokens
-            var tokenResults = await this.engineService.FetchTokensAsync(tokenizationRequest.TokenizationRequestInformation);
+            var tokenResults = await this.engineService.GenerateTokens(tokenizationRequest.TokenizationRequestInformation);
 
             // Build response
             var response = new TokenizationResponse()
