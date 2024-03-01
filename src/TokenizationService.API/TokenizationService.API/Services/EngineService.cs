@@ -17,11 +17,11 @@ namespace TokenizationService.Core.API.Services
 
         public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values)
         {
-            // Check if values exist already
-            // If so use that
+            var result = new TokenizationInformation[values.Length];
+            for (int i = 0; i < values.Length; i++)
+                result[i] = await this.GenerateSingleToken(values[i]);
 
-            // If not generate one
-
+            return result;
         }
 
 
@@ -35,14 +35,37 @@ namespace TokenizationService.Core.API.Services
                     Identifier = value.Identifier
                 };
 
+            var newToken = await this.tokenGenerator.GenerateNewToken(value.Value, value.Identifier);
+            await this.tokenRepository.CreateAsync(new TokenObject() { Token = newToken, Value = value.Value });
 
-
+            return new TokenizationInformation()
+            {
+                Identifier = value.Identifier,
+                Value = newToken,
+            };
         }
 
 
         public Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<DetokenizationInformation> GenerateResult(DetokenizationInformation value)
+        {
+            var existingToken = await this.tokenRepository.ReadAsync(value.Value);
+            if (existingToken != null)
+                return new DetokenizationInformation()
+                {
+                    Value = existingToken.Token,
+                    Identifier = value.Identifier
+                };
+
+            return new DetokenizationInformation()
+            {
+                Identifier = value.Identifier,
+                Value = string.Empty,
+            };
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface ITokenGenerator
     {
-        Task<string> GenerateNewToken(string token, string tokenType);
+        Task<string> GenerateNewToken(string valueToTokenize, string tokenType);
     }
 }
