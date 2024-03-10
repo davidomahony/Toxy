@@ -7,9 +7,9 @@ namespace TokenizationService.Core.API.Services
     public class EngineService : IEngineService
     {
         private readonly ITokenRepository tokenRepository;
-        private readonly ITokenGenerator tokenGenerator;
+        private readonly ITokenServiceGenerator tokenGenerator;
 
-        public EngineService(ITokenRepository tokenRepository, ITokenGenerator tokenGenerator)
+        public EngineService(ITokenRepository tokenRepository, ITokenServiceGenerator tokenGenerator)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
@@ -24,48 +24,49 @@ namespace TokenizationService.Core.API.Services
             return result;
         }
 
+        public async Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens)
+        {
+            var result = new DetokenizationInformation[tokens.Length];
+            for (int i = 0; i < tokens.Length; i++)
+                result[i] = await this.GenerateTranslationResult(tokens[i]);
+
+            return result;
+        }
+
 
         private async Task<TokenizationInformation> GenerateSingleToken(TokenizationInformation value)
         {
+            var result = new TokenizationInformation()
+            {
+                Value = string.Empty,
+                Identifier = value.Identifier
+            };
+
             var existingToken = await this.tokenRepository.GetTokenWithValueAsync(value.Value);
             if (existingToken != null)
-                return new TokenizationInformation()
-                {
-                    Value = existingToken.Token,
-                    Identifier = value.Identifier
-                };
+            {
+                result.Value = existingToken.Value;
+                return result;
+            }
 
             var newToken = await this.tokenGenerator.GenerateNewToken(value.Value, value.Identifier);
-            await this.tokenRepository.CreateAsync(new TokenObject() { Token = newToken, Value = value.Value });
+            result.Value = newToken;
 
-            return new TokenizationInformation()
-            {
-                Identifier = value.Identifier,
-                Value = newToken,
-            };
+            return result;
         }
 
 
-        public Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<DetokenizationInformation> GenerateResult(DetokenizationInformation value)
+        private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value)
         {
             var existingToken = await this.tokenRepository.ReadAsync(value.Value);
-            if (existingToken != null)
-                return new DetokenizationInformation()
-                {
-                    Value = existingToken.Token,
-                    Identifier = value.Identifier
-                };
 
-            return new DetokenizationInformation()
+            var result = new DetokenizationInformation()
             {
-                Identifier = value.Identifier,
-                Value = string.Empty,
+                Value = existingToken?.Token ?? string.Empty,
+                Identifier = value.Identifier
             };
+
+            return result;
         }
     }
 }

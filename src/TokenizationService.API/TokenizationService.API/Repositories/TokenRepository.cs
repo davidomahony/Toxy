@@ -7,6 +7,8 @@ namespace TokenizationService.API.Repositories
     {
         private SqlConnection dbConnection;
 
+        // this class needs to be cleaned up its load of shite
+
         public TokenRepository(IConfiguration configuration)
         {
             string connectionString = configuration["sqlconnection"] 
