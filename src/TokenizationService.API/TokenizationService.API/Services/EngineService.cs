@@ -8,11 +8,13 @@ namespace TokenizationService.Core.API.Services
     {
         private readonly ITokenRepository tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
+        private readonly IEncryptionService encryptionService;
 
-        public EngineService(ITokenRepository tokenRepository, ITokenServiceGenerator tokenGenerator)
+        public EngineService(ITokenRepository tokenRepository, ITokenServiceGenerator tokenGenerator, IEncryptionService encryptionService)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
+            this.encryptionService = encryptionService;
         }
 
         public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values)
@@ -51,6 +53,11 @@ namespace TokenizationService.Core.API.Services
 
             var newToken = await this.tokenGenerator.GenerateNewToken(value.Value, value.Identifier);
             result.Value = newToken;
+
+            var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
+
+            // Boom
+            await this.tokenRepository.CreateAsync(new TokenObject(newToken, encryptedValue));
 
             return result;
         }
