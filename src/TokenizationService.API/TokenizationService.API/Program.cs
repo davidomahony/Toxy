@@ -2,6 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+#if DEBUG // just for now until i get key vault and configuration stuff up and running
+builder.Configuration.AddJsonFile("local.settings.json");
+#endif
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

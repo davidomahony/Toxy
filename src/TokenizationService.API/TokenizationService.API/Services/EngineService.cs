@@ -57,7 +57,12 @@ namespace TokenizationService.Core.API.Services
             var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
 
             // Boom
-            await this.tokenRepository.CreateAsync(new TokenObject(newToken, encryptedValue));
+            await this.tokenRepository.CreateAsync(
+                new TokenObject
+                {
+                    Value = encryptedValue,
+                    Token = newToken
+                });
 
             return result;
         }

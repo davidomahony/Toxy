@@ -120,3 +120,4 @@ _TeamCity*
 
 # DotCover is a Code Coverage Tool
 *.dotCover
+/src/TokenizationService.API/TokenizationService.API/local.settings.json
