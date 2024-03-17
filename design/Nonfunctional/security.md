@@ -21,4 +21,20 @@ Least privilege, Encryption, Authentiction Enhancment, Monitoring Data
 
 ## System security as a whole
 
+### Example Request Security
+
 ## Vault solution security
+
+
+When a value is recieved for tokenization it is instantly encryted, these values are then stored in the in a data store. WHats the seller here? I need way more then this. Is there any way I can say this is encryted three times. Lets salt this aswell. Perhaps the proxy could perform one final step also?
+
+1. Encryption in transit using TLS between cluster communication
+2. Encryption at rest
+    - WiredTiger Engine:
+    - Atlas
+3. Encryption in use
+    - This is the actual encryption we will do (Need a deep dive on this)
+
+token --> Encrypted Value
+How is this encrypted?
+What data store is this encrypted in?
