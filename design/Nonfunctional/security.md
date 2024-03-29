@@ -38,3 +38,8 @@ When a value is recieved for tokenization it is instantly encryted, these values
 token --> Encrypted Value
 How is this encrypted?
 What data store is this encrypted in?
+
+
+
+Reverse Proxy Security
+- Isolate access to the core token service from the reverse proxy

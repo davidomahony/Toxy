@@ -3,9 +3,13 @@ I want one simple configuration to rule them all, but as there is so many moving
 
 ## Core
 This will be the main configuration, looks after the various information relating to the tokens, which are app agnotic
-
+- Number of tokens
+- Token type
 
 ## Proxy
+- Endpoints
+- Fields
+- How to detect tokens
 
 
 
