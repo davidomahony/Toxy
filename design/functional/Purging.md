@@ -1,13 +1,20 @@
 # Purging Tokens
-We need a plan for how we will purge or remove stale tokens.
 
-## Job run a cadence
+## Options for purging
+We have three options for purging these, but there is no real way of getting around it. If we cant remove tokens over time it will make the application slower.
 
+### Jobs runing a cadence
+A fixed job which runs on a certain cadence it will run on each data store and gets the count of each token when it encounters one potentially in some sort of cache. Once the jobs have run we should have identified tokens which are no longer in use.
 
-## Demotion ftera time period
+### Demotion after time period
+A fixed time period which identifies tokens which have not been read in x period of time. After so the cooling off process starts. This is likely the easiest option, but really may not be good enough. An easy solution but has the potential to lose data.
 
+### Notification of deleted tokens
+This one needs a little bit more work, as we will need to keep count of how many times a token has been created to match it up with the number of times its been deleted. Although this could be tricky as in a datastore the tenant may be duplicating without us known. This option adds a lot of complexity and requires lots of implementation on the tenants side. Which is not ideal.
 
-## Notification of deleted tokens
+## Purging Process
+We can have a hard delete where once these tokens are identified thery are gone. Could cause issues if tokens are incorrectly identified as deleted. Therefore a cooling down process may be better, where we archive tokens for a certain length of time in a different datastore which literally has no access. These must be deleted, I dont want these hanging around.
+
 
 
 ## Problems (This should probably be in a different file)

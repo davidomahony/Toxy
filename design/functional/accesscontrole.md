@@ -7,3 +7,7 @@ As each request will contain an auth token, we can use this auth token to get th
 
 ## Auditing access requests
 As a user effectively has to request to detokenize each value we will be able to track what users are detokenizing values. Here we will be able to spot any anomalies or if any unkown users attempt to do so.
+
+
+## Monitoring 
+As we have such control over when people request data we can really see who is accessing what, we can use some sort of detection to identify anomalies. Aalso its a different system making multiple layers of access control
