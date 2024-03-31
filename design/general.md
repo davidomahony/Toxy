@@ -16,7 +16,7 @@ As cyber security becomes more of a concern this systems aims to replace a syste
 
 //## TODO: I need diagrams here
 
-To begin there will be two main services: Engine Service, Proxy Service
+Overview of these architectural designs
 
 ### Engine Service
 The engine service for now will handle assigning configuration and processing tokens such as generation and detoknization. This will start as a monolith but allowances will be made for a seperation at a later time to remove configuration. This will be a dotnet application.
