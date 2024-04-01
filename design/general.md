@@ -13,10 +13,16 @@ As cyber security becomes more of a concern this systems aims to replace a syste
 
 
 ## How does it look
+As the MVP version has as little services as possible this is what it will look like for a standard proxy based flow.
 
-//## TODO: I need diagrams here
+![Alt text](./images/ProxyFlow.png)
+Basic proxy flow of request being sent from application to proxy, which then parses the request and identifies tokens which need to be created or detokenized. It then generates the values to be swapped before it swaps in the correct value.
 
-Overview of these architectural designs
+![Alt text](./images/TokenizationFlow.png)
+Overview of how a request is handled once sent to the engine service. We validate the user before they can access the token store.
+
+![Alt text](./images/configuration.png)
+Configuration service will use engine service for setting configuration specific information
 
 ### Engine Service
 The engine service for now will handle assigning configuration and processing tokens such as generation and detoknization. This will start as a monolith but allowances will be made for a seperation at a later time to remove configuration. This will be a dotnet application.
@@ -38,8 +44,14 @@ This is the ideal scenario, one application to rule them all, ensure this applic
 ## How does the tokenization work
 So there is various ways to generate tokens there is two ideas right now which exist one is a token vault and another is a tokenless vault. This tokenless vault in theory sounds impressive. But this is pretty much encryption. For an MVP we will continue will a vaulted solution as we are generating tokens not encryption values (well we encrypt to but you only need a token)
 
-### Token vault solution
+### Vault solution
 The idea here is that the token value will map to an encrypted value, so no values are stored in clear. How these values are tokenized will be defined in a tenants configurations.
+
+### Vaultless solution
+#TODO add informaiton
+
+
+#TODO Delete inforomation below i need to find a better home for it
 
 #### What happens with the same values
 The same value will produce the same token, it does not mean tokens can be reversed engineered. We detect if a value has been tokenized before and if so we return the token previously generated. 
