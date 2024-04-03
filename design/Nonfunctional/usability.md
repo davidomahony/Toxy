@@ -6,3 +6,7 @@ The aim here is to have as little configuration as possible. Although we want to
 
 ## Proxy Usability
 While a tenant may not know this service even exists, this is the best usabililty, complete transparency. This section does not configure setting configruation settings. THat should be handled in the configuration usability section.
+
+
+## Transparency
+One key factor is to make this as transparent as possible, we want as litte intrusion in the tenant set up as possible. Literally just the proxy reverse proxy.
