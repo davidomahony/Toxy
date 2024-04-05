@@ -9,7 +9,7 @@ The engine will take care of two aspects: (for now) its primary role is tokenizi
 The engine will receive requests from other service requesting a value be tokenized using a certain technique, this needs to be able to do several tokens in one go while being able to identify which token in the response.
 
 
-#### General DTO's
+<!-- #### General DTO's
 Tokenization Request
     // A collection with objects detailing each tokenization request
     TokenizationInformation
@@ -29,6 +29,23 @@ Tokenization Response
         // Id just to identify the token request number
         Id
 
-When performing this request we need to check if a token exists already and if so lets give them that. Lets avoid adding duplicate tokens to collection.
 
 
+Tokenization Request
+    // A collection with objects detailing each tokenization request
+    TokenizationInformation
+        // String containing value to be tokenized
+        Value
+        // String indicatingt technique Used
+        Method
+        // Id just to identify the token request number likely just ints from 1 - X
+        Id -->
+
+
+Tokenization Response
+    // A collection with objects detailing each tokenization request
+    TokenizationInformation
+        // String containing new token
+        Value
+        // Id just to identify the token request number
+        Id
