@@ -7,6 +7,11 @@ The aim here is to have as little configuration as possible. Although we want to
 ## Proxy Usability
 While a tenant may not know this service even exists, this is the best usabililty, complete transparency. This section does not configure setting configruation settings. THat should be handled in the configuration usability section.
 
+### Questions
+What is the absolute easiest way to specify the proxy config?
+The absolute easiest way would be to take in an open API swagger spec with the various fields tagged with a custom attribute. Either way this will need to be converted to a proxy readable setting. So accepting both as an option seems resonable.
+
+It should be possible to indicate if settings are case sensitive.
 
 ## Transparency
 One key factor is to make this as transparent as possible, we want as litte intrusion in the tenant set up as possible. Literally just the proxy reverse proxy.
