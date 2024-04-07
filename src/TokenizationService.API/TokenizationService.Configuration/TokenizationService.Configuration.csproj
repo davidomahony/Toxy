@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Repository\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TokenizationService.Enums\TokenizationService.Enums.csproj" />
   </ItemGroup>
 
 </Project>

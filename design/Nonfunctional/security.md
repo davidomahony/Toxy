@@ -1,4 +1,18 @@
-# Security 
+# Security
+
+
+
+## Inter service authentication
+As we will eventually have multiple services: Proxy, engine and configuration are three possible services in the short termn. We will need each service to proove its identity in each request, also each service will have an explicit list of allowed inbound and outbound traffic IP's
+
+- Proof of identity
+- Whitelists for inbound & outbound
+- HTTPS
+- Least privilege principal
+- Service mesh
+
+
+
 Here we need to call out security measures taken for two areas, number one the system as a whole. Number two the Vault solution what levels of security are used to allow a client to place trust in us with there most sensitive data.
 
 

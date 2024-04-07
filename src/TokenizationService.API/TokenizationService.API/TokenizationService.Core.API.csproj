@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TokenizationService.Configuration\TokenizationService.Configuration.csproj" />
     <ProjectReference Include="..\TokenizationService.Dto\TokenizationService.Dto.csproj" />
   </ItemGroup>
 
