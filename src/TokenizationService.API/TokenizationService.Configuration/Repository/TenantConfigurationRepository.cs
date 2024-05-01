@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,46 +15,77 @@ namespace TokenizationService.Configuration.Repository
     public class TenantConfigurationRepository : IConfigurationRepository<TenantConfiguration>
     {
         private readonly string connectionString = string.Empty;
-        private const string DataBaseName = "Configuration";
-        private const string CollectionName = "Tenant";
+        private const string DataBaseName = "configuration";
+        private const string CollectionName = "tenant";
 
-        public TenantConfigurationRepository()
+        private IMongoCollection<BsonDocument> collection = null;
+
+        public TenantConfigurationRepository(IConfiguration configuration)
         {
-
+            this.connectionString = configuration["MongoConnection"] 
+                ?? throw new ArgumentNullException("Missing configuration connection string");
         }
 
-        private async Task Configure()
+        private void Configure()
         {
-            var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
-            if (connectionString == null)
-            {
-                Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/quick-start/#set-your-connection-string");
-                Environment.Exit(0);
-            }
-
-            var client = new MongoClient(connectionString);
+            var client = new MongoClient(this.connectionString);
             IMongoDatabase database = client.GetDatabase(DataBaseName);
-            IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(CollectionName);
+            this.collection = database.GetCollection<BsonDocument>(CollectionName);
         }
 
-        public Task<TenantConfiguration> AddConfiguration(TenantConfiguration configurationToAdd)
+        public async Task<TenantConfiguration> AddConfiguration(TenantConfiguration configurationToAdd)
         {
-            throw new NotImplementedException();
+            if (this.collection == null)
+                this.Configure();
+
+            await this.collection.InsertOneAsync(configurationToAdd.ToBsonDocument());
+
+            return configurationToAdd;
         }
 
-        public Task DeleteConfiguration(string id)
+        public async Task DeleteConfiguration(string id)
         {
-            throw new NotImplementedException();
+            if (this.collection == null)
+                this.Configure();
+
+            var deleteFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            await this.collection.DeleteOneAsync(deleteFilter);
         }
 
-        public Task<TenantConfiguration> GetConfiguration(string id)
+        public async Task<TenantConfiguration> GetConfiguration(string id)
         {
-            throw new NotImplementedException();
+            if (this.collection == null)
+                this.Configure();
+
+            var getFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            var document = await this.collection.Find(getFilter).FirstOrDefaultAsync();
+
+            if (document == null)
+                return null;
+
+            return ConvertToTenantConfig(document);
         }
 
-        public Task<TenantConfiguration> UpdateConfiguration(string id, TenantConfiguration configurationToUpdate)
+        public async Task<TenantConfiguration> UpdateConfiguration(string id, TenantConfiguration configurationToUpdate)
         {
-            throw new NotImplementedException();
+            if (this.collection == null)
+                this.Configure();
+
+            if (configurationToUpdate == null)
+                throw new ArgumentNullException(nameof(configurationToUpdate));
+
+            var updateFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            var update = configurationToUpdate.ToBsonDocument();
+
+            await this.collection.UpdateOneAsync(updateFilter, update);
+
+
+
+            return null;
         }
+
+
+        private TenantConfiguration ConvertToTenantConfig(BsonDocument document)
+            => BsonSerializer.Deserialize<TenantConfiguration>(document);
     }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using TokenizationService.API.Controllers;
 using TokenizationService.Configuration.Models;
+using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Services;
 using TokenizationService.Dto.Configuration;
 
@@ -12,20 +13,20 @@ namespace TokenizationService.Core.API.Controllers
     public class ConfigurationController
     {
         private readonly ILogger<ConfigurationController> logger;
-        private readonly IConfigurationService configurationService;
+        private readonly IConfigurationRepository<TenantConfiguration> repository;
 
         public ConfigurationController(
-            ILogger<ConfigurationController> logger, 
-            IConfigurationService configurationService)
+            ILogger<ConfigurationController> logger,
+            IConfigurationRepository<TenantConfiguration> configurationService)
         {
             this.logger = logger;
-            this.configurationService = configurationService;
+            this.repository = configurationService;
         }
 
         [HttpGet(Name = nameof(FetchTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> FetchTenantConfiguration([Required] string id)
         {
-            var result = await this.configurationService.GetTenantConfigurationById(id);
+            var result = await this.repository.GetConfiguration(id);
             if (result == null)
                 return new NotFoundObjectResult(string.Empty);
 
@@ -49,16 +50,16 @@ namespace TokenizationService.Core.API.Controllers
                 newConfiguration.TokenizationInformation = addTenantConfiguration.TokenizationInformation
                     .Select(itm => this.Translate(itm));
 
-            var result = await this.configurationService.CreateTenantConfiguration(newConfiguration);
+            var result = await this.repository.AddConfiguration(newConfiguration);
 
             return new OkObjectResult(result);
         }
 
 
-        [HttpPost(Name = nameof(UpdateTenantConfiguration))]
+        [HttpPut(Name = nameof(UpdateTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> UpdateTenantConfiguration([Required] string id, [Required] AddTenantConfigurationDto modifiedConfiguration)
         {
-            var existing = await this.configurationService.GetTenantConfigurationById(id);
+            var existing = await this.repository.GetConfiguration(id);
             if (existing == null)
                 return new NotFoundObjectResult(string.Empty);
 
@@ -74,7 +75,7 @@ namespace TokenizationService.Core.API.Controllers
                     .Select(itm => this.Translate(itm));
             else existing.TokenizationInformation = null;
 
-            var result = await this.configurationService.CreateTenantConfiguration(existing);
+            var result = await this.repository.UpdateConfiguration(id, existing);
 
             return new OkObjectResult(result);
         }
