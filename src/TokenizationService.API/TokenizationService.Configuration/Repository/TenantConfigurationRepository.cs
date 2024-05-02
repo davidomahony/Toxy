@@ -2,12 +2,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using TokenizationService.Configuration.Models;
 
 namespace TokenizationService.Configuration.Repository
@@ -18,25 +12,20 @@ namespace TokenizationService.Configuration.Repository
         private const string DataBaseName = "configuration";
         private const string CollectionName = "tenant";
 
-        private IMongoCollection<BsonDocument> collection = null;
+        private IMongoCollection<BsonDocument>? collection = null;
 
         public TenantConfigurationRepository(IConfiguration configuration)
         {
             this.connectionString = configuration["MongoConnection"] 
                 ?? throw new ArgumentNullException("Missing configuration connection string");
-        }
 
-        private void Configure()
-        {
-            var client = new MongoClient(this.connectionString);
-            IMongoDatabase database = client.GetDatabase(DataBaseName);
-            this.collection = database.GetCollection<BsonDocument>(CollectionName);
+            this.Configure();
         }
 
         public async Task<TenantConfiguration> AddConfiguration(TenantConfiguration configurationToAdd)
         {
             if (this.collection == null)
-                this.Configure();
+                throw new InvalidOperationException("Unable to perform action without valid connection");
 
             await this.collection.InsertOneAsync(configurationToAdd.ToBsonDocument());
 
@@ -46,7 +35,7 @@ namespace TokenizationService.Configuration.Repository
         public async Task DeleteConfiguration(string id)
         {
             if (this.collection == null)
-                this.Configure();
+                throw new InvalidOperationException("Unable to perform action without valid connection");
 
             var deleteFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
             await this.collection.DeleteOneAsync(deleteFilter);
@@ -55,7 +44,7 @@ namespace TokenizationService.Configuration.Repository
         public async Task<TenantConfiguration> GetConfiguration(string id)
         {
             if (this.collection == null)
-                this.Configure();
+                throw new InvalidOperationException("Unable to perform action without valid connection");
 
             var getFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
             var document = await this.collection.Find(getFilter).FirstOrDefaultAsync();
@@ -69,7 +58,7 @@ namespace TokenizationService.Configuration.Repository
         public async Task<TenantConfiguration> UpdateConfiguration(string id, TenantConfiguration configurationToUpdate)
         {
             if (this.collection == null)
-                this.Configure();
+                throw new InvalidOperationException("Unable to perform action without valid connection");
 
             if (configurationToUpdate == null)
                 throw new ArgumentNullException(nameof(configurationToUpdate));
@@ -77,13 +66,18 @@ namespace TokenizationService.Configuration.Repository
             var updateFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
             var update = configurationToUpdate.ToBsonDocument();
 
-            await this.collection.UpdateOneAsync(updateFilter, update);
-
-
+            var result = await this.collection.UpdateOneAsync(updateFilter, update);
 
             return null;
         }
 
+
+        private void Configure()
+        {
+            var client = new MongoClient(this.connectionString);
+            IMongoDatabase database = client.GetDatabase(DataBaseName);
+            this.collection = database.GetCollection<BsonDocument>(CollectionName);
+        }
 
         private TenantConfiguration ConvertToTenantConfig(BsonDocument document)
             => BsonSerializer.Deserialize<TenantConfiguration>(document);

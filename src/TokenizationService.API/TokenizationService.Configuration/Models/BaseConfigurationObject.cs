@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace TokenizationService.Configuration.Models
 {
@@ -11,6 +7,7 @@ namespace TokenizationService.Configuration.Models
         /// <summary>
         /// The ID of the configuration object
         /// </summary>
+        [BsonId]
         public Guid Id { get; set; }
 
         /// <summary>
