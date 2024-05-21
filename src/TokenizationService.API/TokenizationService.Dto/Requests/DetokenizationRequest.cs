@@ -9,6 +9,6 @@
     {
         public string Value { get; set; }
 
-        public int Identifier { get; set; }
+        public string Identifier { get; set; }
     }
 }

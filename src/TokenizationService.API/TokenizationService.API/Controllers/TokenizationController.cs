@@ -18,7 +18,8 @@ namespace TokenizationService.API.Controllers
             this.logger = logger;
         }
 
-        [HttpGet(Name = nameof(Detokenize))]
+        [HttpPost(Name = nameof(Tokenize))]
+        [Route("detokenize")]
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
             // Validate request
@@ -38,6 +39,7 @@ namespace TokenizationService.API.Controllers
         }
 
         [HttpPost(Name = nameof(Tokenize))]
+        [Route("Tokenize")]
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
             // Validate requests
@@ -58,14 +60,28 @@ namespace TokenizationService.API.Controllers
 
         private bool ValidateDetokenizationRequest(DetokenizationRequest detokenizationInformation)
         {
+            if (detokenizationInformation == null)
+                return false;
 
+            foreach (var tokenInfo in detokenizationInformation.DetokenizationRequestInformation)
+            {
+                if (string.IsNullOrEmpty(tokenInfo.Value) || string.IsNullOrEmpty(tokenInfo.Identifier))
+                    return false;
+            }
 
             return true;
         }
 
         private bool ValidateTokenizationRequest(TokenizationRequest tokenizationRequest)
         {
+            if (tokenizationRequest == null)
+                return false;
 
+            foreach (var tokenInfo in tokenizationRequest.TokenizationRequestInformation)
+            {
+                if (string.IsNullOrEmpty(tokenInfo.Value) || string.IsNullOrEmpty(tokenInfo.Identifier))
+                    return false;
+            }
 
             return true;
         }
