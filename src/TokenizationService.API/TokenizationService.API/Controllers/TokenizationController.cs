@@ -18,8 +18,8 @@ namespace TokenizationService.API.Controllers
             this.logger = logger;
         }
 
-        [HttpPost(Name = nameof(Tokenize))]
-        [Route("detokenize")]
+        [HttpPost]
+        [Route("detokenize", Name = nameof(Detokenize))]
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
             // Validate request
@@ -38,8 +38,8 @@ namespace TokenizationService.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Name = nameof(Tokenize))]
-        [Route("Tokenize")]
+        [HttpPost]
+        [Route("tokenize", Name = nameof(Tokenize))]
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
             // Validate requests

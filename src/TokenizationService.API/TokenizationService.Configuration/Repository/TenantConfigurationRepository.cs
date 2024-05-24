@@ -81,5 +81,30 @@ namespace TokenizationService.Configuration.Repository
 
         private TenantConfiguration ConvertToTenantConfig(BsonDocument document)
             => BsonSerializer.Deserialize<TenantConfiguration>(document);
+
+        public async Task<List<TenantConfiguration>> GetAllConfigurations()
+        {
+            if (this.collection == null)
+                throw new InvalidOperationException("Unable to perform action without a valid connection");
+
+            // Create an empty filter to match all documents
+            var filter = Builders<BsonDocument>.Filter.Empty;
+
+            // Retrieve all documents from the collection
+            var documents = await this.collection.Find(filter).ToListAsync();
+
+            if (documents == null || documents.Count == 0)
+                return null;
+
+            // Convert BsonDocuments to TenantConfiguration objects
+            var tenantConfigurations = documents.Select(ConvertToTenantConfig).ToList();
+
+            return tenantConfigurations;
+        }
+
+        public Task<TenantConfiguration> GetConfigurationByName(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

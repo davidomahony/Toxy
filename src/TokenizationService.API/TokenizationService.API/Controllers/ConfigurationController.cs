@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using TokenizationService.API.Controllers;
 using TokenizationService.Configuration.Models;
@@ -23,10 +24,28 @@ namespace TokenizationService.Core.API.Controllers
             this.repository = configurationService;
         }
 
-        [HttpGet(Name = nameof(FetchTenantConfiguration))]
+        [HttpGet]
+        [Route("{id}", Name = nameof(FetchTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> FetchTenantConfiguration([Required] string id)
         {
             var result = await this.repository.GetConfiguration(id);
+            if (result == null)
+                return new NotFoundObjectResult(string.Empty);
+
+            var itm = new TenantConfigurationDto()
+            {
+                Id = result.Id.ToString(),
+                Name = result.Name,
+            };
+
+            return new OkObjectResult(itm);
+        }
+
+        [HttpGet]
+        [Route("", Name = nameof(FetchAllTenantConfiguration))]
+        public async Task<ActionResult<TenantConfigurationDto>> FetchAllTenantConfiguration()
+        {
+            var result = await this.repository.GetAllConfigurations();
             if (result == null)
                 return new NotFoundObjectResult(string.Empty);
 
@@ -56,7 +75,8 @@ namespace TokenizationService.Core.API.Controllers
         }
 
 
-        [HttpPut(Name = nameof(UpdateTenantConfiguration))]
+        [HttpPut]
+        [Route("{id}", Name = nameof(UpdateTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> UpdateTenantConfiguration([Required] string id, [Required] AddTenantConfigurationDto modifiedConfiguration)
         {
             var existing = await this.repository.GetConfiguration(id);
@@ -84,7 +104,6 @@ namespace TokenizationService.Core.API.Controllers
             => new TokenizationInformation()
             {
                 Name = tokenizationInformationDto.Name,
-                Id = tokenizationInformationDto.Id,
                 TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
                 Salt = tokenizationInformationDto.Salt,
                 Key = tokenizationInformationDto.Key,
@@ -97,7 +116,6 @@ namespace TokenizationService.Core.API.Controllers
             => new ServiceConfigurationInformation()
             {
                 Name = serviceConfigurationInformation.Name,
-                Id = serviceConfigurationInformation.Id,
                 AllowedInboundIps = serviceConfigurationInformation.AllowedInboundIps,
                 AllowedOutboundIps = serviceConfigurationInformation.AllowedOutboundIps
             };

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TokenizationService.Configuration.Models
 {
@@ -8,7 +9,7 @@ namespace TokenizationService.Configuration.Models
         /// The ID of the configuration object
         /// </summary>
         [BsonId]
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
 
         /// <summary>
         /// A friendy name of the configuration object

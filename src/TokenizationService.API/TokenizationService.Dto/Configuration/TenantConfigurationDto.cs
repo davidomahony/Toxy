@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,8 +13,7 @@ namespace TokenizationService.Dto.Configuration
         /// <summary>
         /// The ID of the configuration object
         /// </summary>
-        [Required]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// A friendy name of the configuration object

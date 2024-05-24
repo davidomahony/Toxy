@@ -10,6 +10,10 @@ namespace TokenizationService.Configuration.Repository
     {
         Task<T> GetConfiguration(string id);
 
+        Task<T> GetConfigurationByName(string id);
+
+        Task<List<T>> GetAllConfigurations();
+
         Task<T> UpdateConfiguration(string id, T configurationToUpdate);
 
         Task<T> AddConfiguration(T configurationToAdd);
