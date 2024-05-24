@@ -6,11 +6,6 @@ namespace TokenizationService.Dto.Configuration
     public class TokenizationInformationDto
     {
         /// <summary>
-        /// The ID of the configuration object
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
         /// A friendy name of the configuration object
         /// </summary>
         [Required]

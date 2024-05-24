@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
 using TokenizationService.API.Controllers;
@@ -15,13 +16,16 @@ namespace TokenizationService.Core.API.Controllers
     {
         private readonly ILogger<ConfigurationController> logger;
         private readonly IConfigurationRepository<TenantConfiguration> repository;
+        private readonly IMapper mapper;
 
         public ConfigurationController(
             ILogger<ConfigurationController> logger,
-            IConfigurationRepository<TenantConfiguration> configurationService)
+            IConfigurationRepository<TenantConfiguration> configurationService,
+            IMapper mapper)
         {
             this.logger = logger;
             this.repository = configurationService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -32,13 +36,9 @@ namespace TokenizationService.Core.API.Controllers
             if (result == null)
                 return new NotFoundObjectResult(string.Empty);
 
-            var itm = new TenantConfigurationDto()
-            {
-                Id = result.Id.ToString(),
-                Name = result.Name,
-            };
+            var returned = mapper.Map<TenantConfigurationDto>(result);
 
-            return new OkObjectResult(itm);
+            return new OkObjectResult(returned);
         }
 
         [HttpGet]
@@ -49,7 +49,9 @@ namespace TokenizationService.Core.API.Controllers
             if (result == null)
                 return new NotFoundObjectResult(string.Empty);
 
-            return new OkObjectResult(result);
+            var returned = result.Select(mapper.Map<TenantConfigurationDto>).ToList();
+
+            return new OkObjectResult(returned);
         }
 
         [HttpPost(Name = nameof(AddTenantConfiguration))]
