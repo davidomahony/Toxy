@@ -4,11 +4,23 @@ using System;
 
 namespace TokenizationService.Configuration.Models
 {
-    public class TenantConfiguration : BaseConfigurationObject
+    public class TenantConfiguration 
+        //: BaseConfigurationObject
     {
 
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId? Id { get; set; }
+
+        /// <summary>
+        /// A friendy name of the configuration object
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// DIctionary used for chucking information into
+        /// </summary>
+        public Dictionary<string, string>? Tags { get; set; }
 
         public IEnumerable<ServiceConfigurationInformation>? ServiceConfigurationInformation { get; set; }
 

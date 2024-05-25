@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TokenizationService.Configuration.Models;
 
@@ -9,15 +8,21 @@ namespace TokenizationService.Configuration.Repository
     public class TenantConfigurationRepository : IConfigurationRepository<TenantConfiguration>
     {
         private readonly string connectionString = string.Empty;
-        private const string DataBaseName = "configuration";
-        private const string CollectionName = "tenant";
+        private readonly string dataBaseName = "configuration";
+        private readonly string collectionName = "tenant";
 
-        private IMongoCollection<BsonDocument>? collection = null;
+        private IMongoCollection<TenantConfiguration>? collection = null;
 
         public TenantConfigurationRepository(IConfiguration configuration)
         {
             this.connectionString = configuration["MongoConnection"] 
                 ?? throw new ArgumentNullException("Missing configuration connection string");
+
+            this.collectionName = configuration["Configuration:CollectionName"]
+                ?? throw new ArgumentNullException("Missing configuration collection name");
+
+            this.dataBaseName = configuration["Configuration:DatabaseName"]
+                ?? throw new ArgumentNullException("Missing configuration database name");
 
             this.Configure();
         }
@@ -27,7 +32,7 @@ namespace TokenizationService.Configuration.Repository
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
-            await this.collection.InsertOneAsync(configurationToAdd.ToBsonDocument());
+            await this.collection.InsertOneAsync(configurationToAdd);
 
             return configurationToAdd;
         }
@@ -37,7 +42,7 @@ namespace TokenizationService.Configuration.Repository
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
-            var deleteFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            var deleteFilter = Builders<TenantConfiguration>.Filter.Eq("_id", new ObjectId(id));
             await this.collection.DeleteOneAsync(deleteFilter);
         }
 
@@ -46,13 +51,10 @@ namespace TokenizationService.Configuration.Repository
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
-            var getFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
+            var getFilter = Builders<TenantConfiguration>.Filter.Eq("_id", new ObjectId(id));
             var document = await this.collection.Find(getFilter).FirstOrDefaultAsync();
 
-            if (document == null)
-                return null;
-
-            return ConvertToTenantConfig(document);
+            return document;
         }
 
         public async Task<TenantConfiguration> UpdateConfiguration(string id, TenantConfiguration configurationToUpdate)
@@ -63,24 +65,17 @@ namespace TokenizationService.Configuration.Repository
             if (configurationToUpdate == null)
                 throw new ArgumentNullException(nameof(configurationToUpdate));
 
-            var updateFilter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(id));
-            var update = configurationToUpdate.ToBsonDocument();
+            var filter = Builders<TenantConfiguration>.Filter.Eq(u => u.Id, ObjectId.Parse(id));
+            var updateDefinition = Builders<TenantConfiguration>.Update
+                .Set(u => u.Name, configurationToUpdate.Name)
+                .Set(u => u.TokenizationInformation, configurationToUpdate.TokenizationInformation)
+                .Set(u => u.ServiceConfigurationInformation, configurationToUpdate.ServiceConfigurationInformation)
+                .Set(u => u.Created, configurationToUpdate.Created);
 
-            var result = await this.collection.UpdateOneAsync(updateFilter, update);
+            await this.collection.UpdateOneAsync(filter, updateDefinition);
 
-            return null;
+            return configurationToUpdate;
         }
-
-
-        private void Configure()
-        {
-            var client = new MongoClient(this.connectionString);
-            IMongoDatabase database = client.GetDatabase(DataBaseName);
-            this.collection = database.GetCollection<BsonDocument>(CollectionName);
-        }
-
-        private TenantConfiguration ConvertToTenantConfig(BsonDocument document)
-            => BsonSerializer.Deserialize<TenantConfiguration>(document);
 
         public async Task<List<TenantConfiguration>> GetAllConfigurations()
         {
@@ -88,7 +83,7 @@ namespace TokenizationService.Configuration.Repository
                 throw new InvalidOperationException("Unable to perform action without a valid connection");
 
             // Create an empty filter to match all documents
-            var filter = Builders<BsonDocument>.Filter.Empty;
+            var filter = Builders<TenantConfiguration>.Filter.Empty;
 
             // Retrieve all documents from the collection
             var documents = await this.collection.Find(filter).ToListAsync();
@@ -97,14 +92,16 @@ namespace TokenizationService.Configuration.Repository
                 return null;
 
             // Convert BsonDocuments to TenantConfiguration objects
-            var tenantConfigurations = documents.Select(ConvertToTenantConfig).ToList();
+            var tenantConfigurations = documents.ToList();
 
             return tenantConfigurations;
         }
 
-        public Task<TenantConfiguration> GetConfigurationByName(string id)
+        private void Configure()
         {
-            throw new NotImplementedException();
+            var client = new MongoClient(this.connectionString);
+            IMongoDatabase database = client.GetDatabase(dataBaseName);
+            this.collection = database.GetCollection<TenantConfiguration>(collectionName);
         }
     }
 }

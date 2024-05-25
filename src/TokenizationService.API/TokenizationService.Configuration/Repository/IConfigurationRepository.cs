@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TokenizationService.Configuration.Repository
 {
     public interface IConfigurationRepository<T>
     {
         Task<T> GetConfiguration(string id);
-
-        Task<T> GetConfigurationByName(string id);
 
         Task<List<T>> GetAllConfigurations();
 
