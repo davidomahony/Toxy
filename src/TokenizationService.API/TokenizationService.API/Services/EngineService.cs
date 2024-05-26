@@ -1,4 +1,5 @@
-﻿using TokenizationService.API.Repositories;
+﻿using System.Collections.Generic;
+using TokenizationService.API.Repositories;
 using TokenizationService.Core.API.Models;
 using TokenizationService.Core.API.Repositories;
 
@@ -8,16 +9,16 @@ namespace TokenizationService.Core.API.Services
     {
         private readonly ITokenRepository tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
-        private readonly IEncryptionService encryptionService;
+        private readonly IEnumerable<IEncryptionService> encryptionServices;
 
         public EngineService(
             ITokenRepository tokenRepository, 
-            ITokenServiceGenerator tokenGenerator, 
-            IEncryptionService encryptionService)
+            ITokenServiceGenerator tokenGenerator,
+            IEnumerable<IEncryptionService> encryptionServices)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
-            this.encryptionService = encryptionService;
+            this.encryptionServices = encryptionServices;
         }
 
         public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values)
@@ -46,6 +47,8 @@ namespace TokenizationService.Core.API.Services
                 Value = string.Empty,
                 Identifier = value.Identifier
             };
+
+            // I need to check based on the method used what encryption is needed
 
             var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
 

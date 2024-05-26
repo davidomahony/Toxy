@@ -1,5 +1,6 @@
 ﻿using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
+using TokenizationService.Core.API.Services;
 
 namespace TokenizationService.Core.API
 {
@@ -9,6 +10,9 @@ namespace TokenizationService.Core.API
         {
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
+            services.AddScoped<IEncryptionService, DesEncryptionService>();
+            services.AddScoped<IEncryptionService, RsaEncryptionService>();
             services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
