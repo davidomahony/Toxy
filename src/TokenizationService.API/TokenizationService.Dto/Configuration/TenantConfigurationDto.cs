@@ -29,5 +29,7 @@ namespace TokenizationService.Dto.Configuration
         public IEnumerable<ServiceConfigurationInformationDto>? ServiceConfigurationInformation { get; set; }
 
         public IEnumerable<TokenizationInformationDto>? TokenizationInformation { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

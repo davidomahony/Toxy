@@ -11,6 +11,8 @@ namespace TokenizationService.Core.API.Services
             this.tokenRepository = tokenRepository;
         }
 
+        public string Identifier => throw new NotImplementedException();
+
         public async Task<string> GenerateNewToken(string valueToTokenize, string tokenType)
         {
             string result = string.Empty;

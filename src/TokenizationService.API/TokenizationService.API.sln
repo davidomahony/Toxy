@@ -9,13 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Dto", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Proxy", "..\Toxy.Proxy\TokenizationService.Proxy.csproj", "{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.UnitTests", "..\TokenizationService.Tests\TokenizationService.UnitTests.csproj", "{32FC0D97-1ADE-4D6C-AFF6-89033D3C93FF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Configuration", "TokenizationService.Configuration\TokenizationService.Configuration.csproj", "{01EDADAD-ACDF-45BE-902B-BD6A36829D23}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Enums", "TokenizationService.Enums\TokenizationService.Enums.csproj", "{E585328E-2660-4E1B-9AB0-11D34FFFA0E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenizationService.Configuration.Tests", "TokenizationService.Configuration.Tests\TokenizationService.Configuration.Tests.csproj", "{D12FB238-CC35-4A61-8323-6E865157E41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Configuration.Tests", "TokenizationService.Configuration.Tests\TokenizationService.Configuration.Tests.csproj", "{D12FB238-CC35-4A61-8323-6E865157E41B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F72138B2-68CB-4E68-B5A3-BE27062B6BD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32FC0D97-1ADE-4D6C-AFF6-89033D3C93FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32FC0D97-1ADE-4D6C-AFF6-89033D3C93FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32FC0D97-1ADE-4D6C-AFF6-89033D3C93FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32FC0D97-1ADE-4D6C-AFF6-89033D3C93FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01EDADAD-ACDF-45BE-902B-BD6A36829D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01EDADAD-ACDF-45BE-902B-BD6A36829D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01EDADAD-ACDF-45BE-902B-BD6A36829D23}.Release|Any CPU.ActiveCfg = Release|Any CPU

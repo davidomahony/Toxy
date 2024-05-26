@@ -8,8 +8,8 @@ namespace TokenizationService.Configuration.Repository
     public class TenantConfigurationRepository : IConfigurationRepository<TenantConfiguration>
     {
         private readonly string connectionString = string.Empty;
-        private readonly string dataBaseName = "configuration";
-        private readonly string collectionName = "tenant";
+        private readonly string dataBaseName;
+        private readonly string collectionName;
 
         private IMongoCollection<TenantConfiguration>? collection = null;
 
@@ -68,6 +68,7 @@ namespace TokenizationService.Configuration.Repository
             var filter = Builders<TenantConfiguration>.Filter.Eq(u => u.Id, ObjectId.Parse(id));
             var updateDefinition = Builders<TenantConfiguration>.Update
                 .Set(u => u.Name, configurationToUpdate.Name)
+                .Set(u => u.IsActive, configurationToUpdate.IsActive)
                 .Set(u => u.TokenizationInformation, configurationToUpdate.TokenizationInformation)
                 .Set(u => u.ServiceConfigurationInformation, configurationToUpdate.ServiceConfigurationInformation)
                 .Set(u => u.Created, configurationToUpdate.Created);
@@ -88,13 +89,7 @@ namespace TokenizationService.Configuration.Repository
             // Retrieve all documents from the collection
             var documents = await this.collection.Find(filter).ToListAsync();
 
-            if (documents == null || documents.Count == 0)
-                return null;
-
-            // Convert BsonDocuments to TenantConfiguration objects
-            var tenantConfigurations = documents.ToList();
-
-            return tenantConfigurations;
+            return documents?.ToList();
         }
 
         private void Configure()

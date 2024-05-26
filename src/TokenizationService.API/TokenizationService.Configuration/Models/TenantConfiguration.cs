@@ -27,5 +27,7 @@ namespace TokenizationService.Configuration.Models
         public IEnumerable<TokenizationInformation>? TokenizationInformation { get; set; }
 
         public DateTime Created { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

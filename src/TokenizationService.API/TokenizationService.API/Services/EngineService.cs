@@ -10,7 +10,10 @@ namespace TokenizationService.Core.API.Services
         private readonly ITokenServiceGenerator tokenGenerator;
         private readonly IEncryptionService encryptionService;
 
-        public EngineService(ITokenRepository tokenRepository, ITokenServiceGenerator tokenGenerator, IEncryptionService encryptionService)
+        public EngineService(
+            ITokenRepository tokenRepository, 
+            ITokenServiceGenerator tokenGenerator, 
+            IEncryptionService encryptionService)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
@@ -44,17 +47,19 @@ namespace TokenizationService.Core.API.Services
                 Identifier = value.Identifier
             };
 
-            var existingToken = await this.tokenRepository.GetTokenWithValueAsync(value.Value);
+            var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
+
+            var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue);
             if (existingToken != null)
             {
                 result.Value = existingToken.Value;
                 return result;
             }
 
+
             var newToken = await this.tokenGenerator.GenerateNewToken(value.Value, value.Identifier);
             result.Value = newToken;
 
-            var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
 
             // Boom
             await this.tokenRepository.CreateAsync(
