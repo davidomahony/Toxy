@@ -27,7 +27,7 @@ namespace TokenizationService.API.Controllers
                 return BadRequest();
 
             // Generate tokens
-            var tokenResults = await this.engineService.FetchTokenValuesAsync(detokenizationRequest.DetokenizationRequestInformation);
+            var tokenResults = await this.engineService.FetchTokenValuesAsync(detokenizationRequest.DetokenizationRequestInformation, detokenizationRequest.ClientId);
 
             // Build response
             var response = new DetokenizationResponse()
@@ -47,7 +47,7 @@ namespace TokenizationService.API.Controllers
                 return BadRequest();
 
             // Generate tokens
-            var tokenResults = await this.engineService.GenerateTokens(tokenizationRequest.TokenizationRequestInformation);
+            var tokenResults = await this.engineService.GenerateTokens(tokenizationRequest.TokenizationRequestInformation, tokenizationRequest.ClientId);
 
             // Build response
             var response = new TokenizationResponse()

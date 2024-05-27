@@ -3,6 +3,8 @@
     public class TokenizationRequest
     {
         public TokenizationInformation[] TokenizationRequestInformation { get; set; }
+
+        public string ClientId { get; set; }
     }
 
     public class TokenizationInformation

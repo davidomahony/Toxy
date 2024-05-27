@@ -1,11 +1,13 @@
-﻿namespace TokenizationService.Core.API.Services
+﻿using TokenizationService.Enums.Configuration;
+
+namespace TokenizationService.Core.API.Services
 {
     public interface IEncryptionService
     {
-        string Identifier { get; }
+        EncryptionType Identifier { get; }
 
-        string EncryptString(string encryptMe, string tokenType);
+        string EncryptString(string encryptMe, string key, string salt);
 
-        string DecryptString(string decryptMe, string tokenType);
+        string DecryptString(string decryptMe, string key, string salt);
     }
 }

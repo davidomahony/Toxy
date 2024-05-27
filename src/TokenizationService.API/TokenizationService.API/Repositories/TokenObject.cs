@@ -7,14 +7,15 @@ namespace TokenizationService.API.Repositories
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
+        public ObjectId Id { get; set; }
 
         [BsonRepresentation(BsonType.String)]
         public string Token { get; set; }
 
-
         [BsonRepresentation(BsonType.String)]
         public string Value { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
+        public int Count { get; set; }
     }
 }

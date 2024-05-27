@@ -29,5 +29,8 @@ namespace TokenizationService.Dto.Configuration
 
         [Required]
         public string? PostWrapper { get; set; }
+
+        [Required]
+        public string Identifier { get; set; }
     }
 }

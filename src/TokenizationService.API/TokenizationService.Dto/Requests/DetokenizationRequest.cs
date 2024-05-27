@@ -3,6 +3,8 @@
     public class DetokenizationRequest
     {
         public DetokenizationInformation[] DetokenizationRequestInformation { get; set; }
+
+        public string ClientId;
     }
 
     public class DetokenizationInformation

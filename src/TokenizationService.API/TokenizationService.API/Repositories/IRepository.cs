@@ -27,5 +27,13 @@
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<T> UpdateAsync(string id, T entity);
+
+        /// <summary>
+        /// Update an object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<int> GetNextCount();
     }
 }

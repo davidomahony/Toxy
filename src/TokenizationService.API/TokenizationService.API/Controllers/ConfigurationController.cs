@@ -102,8 +102,8 @@ namespace TokenizationService.Core.API.Controllers
             return new OkObjectResult(result);
         }
 
-        private TokenizationInformation Translate(TokenizationInformationDto tokenizationInformationDto)
-            => new TokenizationInformation()
+        private TokenizationConfigurationInformation Translate(TokenizationInformationDto tokenizationInformationDto)
+            => new TokenizationConfigurationInformation()
             {
                 Name = tokenizationInformationDto.Name,
                 TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
@@ -111,7 +111,8 @@ namespace TokenizationService.Core.API.Controllers
                 Key = tokenizationInformationDto.Key,
                 DataType = tokenizationInformationDto.DataType,
                 PreWrapper = tokenizationInformationDto.PreWrapper,
-                PostWrapper = tokenizationInformationDto.PostWrapper
+                PostWrapper = tokenizationInformationDto.PostWrapper,
+                Identifier = tokenizationInformationDto.Identifier
             };
 
         private ServiceConfigurationInformation Translate(ServiceConfigurationInformationDto serviceConfigurationInformation)

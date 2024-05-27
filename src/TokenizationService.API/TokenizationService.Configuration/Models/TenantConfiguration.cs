@@ -24,7 +24,7 @@ namespace TokenizationService.Configuration.Models
 
         public IEnumerable<ServiceConfigurationInformation>? ServiceConfigurationInformation { get; set; }
 
-        public IEnumerable<TokenizationInformation>? TokenizationInformation { get; set; }
+        public IEnumerable<TokenizationConfigurationInformation>? TokenizationInformation { get; set; }
 
         public DateTime Created { get; set; }
 

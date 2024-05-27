@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using TokenizationService.Enums.Configuration;
 
 namespace TokenizationService.Configuration.Models
 {
-    public class TokenizationInformation : BaseConfigurationObject
+    public class TokenizationConfigurationInformation : BaseConfigurationObject
     {
         public EncryptionType TokenizationMethod { get; set; }
         public string? Key { get; set; }
@@ -15,5 +11,6 @@ namespace TokenizationService.Configuration.Models
         public string? DataType { get; set; }
         public string? PreWrapper { get; set; }
         public string? PostWrapper { get; set; }
+        public string Identifier { get; set; }
     }
 }

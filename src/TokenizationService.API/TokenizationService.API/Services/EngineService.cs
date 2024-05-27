@@ -9,38 +9,38 @@ namespace TokenizationService.Core.API.Services
     {
         private readonly ITokenRepository tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
-        private readonly IEnumerable<IEncryptionService> encryptionServices;
+        private readonly IEncryptionProvider encryptionProvider;
 
         public EngineService(
-            ITokenRepository tokenRepository, 
+            ITokenRepository tokenRepository,
             ITokenServiceGenerator tokenGenerator,
-            IEnumerable<IEncryptionService> encryptionServices)
+            IEncryptionProvider encryptionProvider)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
-            this.encryptionServices = encryptionServices;
+            this.encryptionProvider = encryptionProvider;
         }
 
-        public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values)
+        public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values, string clientId)
         {
             var result = new TokenizationInformation[values.Length];
             for (int i = 0; i < values.Length; i++)
-                result[i] = await this.GenerateSingleToken(values[i]);
+                result[i] = await this.GenerateSingleToken(values[i], clientId);
 
             return result;
         }
 
-        public async Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens)
+        public async Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens, string clientId)
         {
             var result = new DetokenizationInformation[tokens.Length];
             for (int i = 0; i < tokens.Length; i++)
-                result[i] = await this.GenerateTranslationResult(tokens[i]);
+                result[i] = await this.GenerateTranslationResult(tokens[i], clientId);
 
             return result;
         }
 
 
-        private async Task<TokenizationInformation> GenerateSingleToken(TokenizationInformation value)
+        private async Task<TokenizationInformation> GenerateSingleToken(TokenizationInformation value, string clientId)
         {
             var result = new TokenizationInformation()
             {
@@ -48,10 +48,7 @@ namespace TokenizationService.Core.API.Services
                 Identifier = value.Identifier
             };
 
-            // I need to check based on the method used what encryption is needed
-
-            var encryptedValue = this.encryptionService.EncryptString(value.Value, value.Identifier);
-
+            var encryptedValue = await this.encryptionProvider.EncryptString(value.Value, value.Identifier, clientId);
             var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue);
             if (existingToken != null)
             {
@@ -59,10 +56,8 @@ namespace TokenizationService.Core.API.Services
                 return result;
             }
 
-
-            var newToken = await this.tokenGenerator.GenerateNewToken(value.Value, value.Identifier);
+            var newToken = await this.tokenGenerator.GenerateNewToken(value, clientId);
             result.Value = newToken;
-
 
             // Boom
             await this.tokenRepository.CreateAsync(
@@ -76,7 +71,7 @@ namespace TokenizationService.Core.API.Services
         }
 
 
-        private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value)
+        private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value, string clientId)
         {
             var existingToken = await this.tokenRepository.ReadAsync(value.Value);
 

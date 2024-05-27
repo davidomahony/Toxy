@@ -1,4 +1,8 @@
-﻿using TokenizationService.Core.API.Repositories;
+﻿using System.Text;
+using TokenizationService.Configuration.Models;
+using TokenizationService.Configuration.Repository;
+using TokenizationService.Core.API.Models;
+using TokenizationService.Core.API.Repositories;
 
 namespace TokenizationService.Core.API.Services
 {
@@ -6,31 +10,38 @@ namespace TokenizationService.Core.API.Services
     {
         private readonly ITokenRepository tokenRepository;
         private readonly IConfiguration configuration;
+        private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
-        public TokenGeneratorService(ITokenRepository tokenRepository, IConfiguration configuration)
+        public TokenGeneratorService(ITokenRepository tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
         {
             this.tokenRepository = tokenRepository;
             this.configuration = configuration;
+            this.tenantConfiguration = tenantConfiguration;
         }
 
         public string Identifier => throw new NotImplementedException();
 
-        public async Task<string> GenerateNewToken(string valueToTokenize, string tokenType)
+        public async Task<string> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
         {
-            string result = string.Empty;
+            var config = await this.tenantConfiguration.GetConfiguration(clientId);
+            if (config == null)
+                throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
-            // i need to check the tokenization method
-            // -- Based on the tokenization method I decide the look and feel of the token
+            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Identifier.Equals(tokenizationInformation.Identifier, StringComparison.OrdinalIgnoreCase));
+            if (tokenizationMethod == null)
+                throw new InvalidOperationException("Unable to locate tokenization method");
 
-            // need to use the repository to get it
+            var nextValue = await this.tokenRepository.GetNextCount();
 
-            // i need to see how I set the next token
+            // right now I am lazy, I should really convert the next value to string with letters
 
-            var newId = Guid.NewGuid();
-            if (!await this.tokenRepository.CheckIdExists(newId, tokenType))
-                throw new InvalidOperationException("Id exist lets not make duplicates");
+            var builder = new StringBuilder();
+            builder.Append(tokenizationMethod.PreWrapper);
+            builder.Append(tokenizationMethod.Identifier);
+            builder.Append(nextValue);
+            builder.Append(tokenizationMethod.PostWrapper);
 
-            return result;
+            return builder.ToString();
         }
     }
 }

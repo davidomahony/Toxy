@@ -12,7 +12,7 @@ namespace TokenizationService.Core.API.Utilities
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ReverseMap();
             CreateMap<ServiceConfigurationInformation, ServiceConfigurationInformationDto>().ReverseMap();
-            CreateMap<TokenizationInformation, TokenizationInformationDto>().ReverseMap();
+            CreateMap<TokenizationConfigurationInformation, TokenizationInformationDto>().ReverseMap();
         }
     }
 }
