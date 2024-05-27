@@ -25,7 +25,7 @@ namespace TokenizationService.Core.API.Services
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
-            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Identifier.Equals(tokenType, StringComparison.OrdinalIgnoreCase));
+            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenType, StringComparison.OrdinalIgnoreCase));
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 

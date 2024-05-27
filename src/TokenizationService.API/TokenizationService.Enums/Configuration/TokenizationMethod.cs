@@ -4,5 +4,6 @@
     {
         RSA,
         AES,
+        DES,
     }
 }

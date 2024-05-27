@@ -6,7 +6,7 @@ namespace TokenizationService.Core.API.Services
 {
     public class RsaEncryptionService : IEncryptionService
     {
-        public EncryptionType Identifier => throw new NotImplementedException();
+        public EncryptionType Identifier => EncryptionType.RSA;
 
         public string DecryptString(string decryptMe, string key, string salt)
         {

@@ -35,5 +35,8 @@
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> GetNextCount();
+
+        
+        Task<T?> GetTokenWithValueAsync(string value);
     }
 }

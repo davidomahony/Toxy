@@ -18,6 +18,8 @@ namespace TokenizationService.API.Repositories
 
         public abstract Task<int> GetNextCount();
 
+        public abstract Task<TokenObject?> GetTokenWithValueAsync(string value);
+
         public abstract Task<TokenObject> ReadAsync(string id);
 
         public abstract Task<TokenObject> UpdateAsync(string id, TokenObject entity);

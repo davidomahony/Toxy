@@ -52,6 +52,17 @@ namespace TokenizationService.API.Repositories
             return result.Count + 1;
         }
 
+        public override async Task<TokenObject?> GetTokenWithValueAsync(string value)
+        {
+            if (this.collection == null)
+                throw new InvalidOperationException("Unable to perform action without valid connection");
+
+            var getFilter = Builders<TokenObject>.Filter.Eq("value", value);
+            var document = (await this.collection.FindAsync(getFilter)).FirstOrDefaultAsync();
+
+            return await document;
+        }
+
         public async override Task<TokenObject> ReadAsync(string id)
         {
             if (this.collection == null)

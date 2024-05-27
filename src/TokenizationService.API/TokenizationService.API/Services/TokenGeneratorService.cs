@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TokenizationService.API.Repositories;
 using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Models;
@@ -8,11 +9,11 @@ namespace TokenizationService.Core.API.Services
 {
     public class TokenGeneratorService : ITokenServiceGenerator
     {
-        private readonly ITokenRepository tokenRepository;
+        private readonly IRepository<TokenObject> tokenRepository;
         private readonly IConfiguration configuration;
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
-        public TokenGeneratorService(ITokenRepository tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
+        public TokenGeneratorService(IRepository<TokenObject> tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
         {
             this.tokenRepository = tokenRepository;
             this.configuration = configuration;

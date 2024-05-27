@@ -23,7 +23,7 @@ namespace TokenizationService.API.Controllers
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
             // Validate request
-            if (ValidateDetokenizationRequest(detokenizationRequest))
+            if (!ValidateDetokenizationRequest(detokenizationRequest))
                 return BadRequest();
 
             // Generate tokens
@@ -43,7 +43,7 @@ namespace TokenizationService.API.Controllers
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
             // Validate requests
-            if (ValidateTokenizationRequest(tokenizationRequest))
+            if (!ValidateTokenizationRequest(tokenizationRequest))
                 return BadRequest();
 
             // Generate tokens

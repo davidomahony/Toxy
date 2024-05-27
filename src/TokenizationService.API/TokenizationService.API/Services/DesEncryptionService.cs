@@ -6,7 +6,7 @@ namespace TokenizationService.Core.API.Services
 {
     public class DesEncryptionService : IEncryptionService
     {
-        public EncryptionType Identifier => throw new NotImplementedException();
+        public EncryptionType Identifier => EncryptionType.DES;
 
         public string DecryptString(string decryptMe, string key, string salt)
         {
@@ -39,8 +39,8 @@ namespace TokenizationService.Core.API.Services
             {
                 using (var des = new DESCryptoServiceProvider())
                 {
-                    des.Key = Encoding.UTF8.GetBytes(key);
-                    des.IV = Encoding.UTF8.GetBytes(salt);
+                    des.Key = Encoding.UTF8.GetBytes(key).Take(8).ToArray();
+                    des.IV = Encoding.ASCII.GetBytes(salt).Take(8).ToArray();
 
                     byte[] inputBytes = Encoding.UTF8.GetBytes(encryptMe);
 

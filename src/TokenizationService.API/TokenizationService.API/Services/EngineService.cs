@@ -7,12 +7,12 @@ namespace TokenizationService.Core.API.Services
 {
     public class EngineService : IEngineService
     {
-        private readonly ITokenRepository tokenRepository;
+        private readonly IRepository<TokenObject> tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
         private readonly IEncryptionProvider encryptionProvider;
 
         public EngineService(
-            ITokenRepository tokenRepository,
+            IRepository<TokenObject> tokenRepository,
             ITokenServiceGenerator tokenGenerator,
             IEncryptionProvider encryptionProvider)
         {
