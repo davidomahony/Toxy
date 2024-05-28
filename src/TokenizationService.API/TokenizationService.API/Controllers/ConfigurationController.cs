@@ -112,7 +112,8 @@ namespace TokenizationService.Core.API.Controllers
                 DataType = tokenizationInformationDto.DataType,
                 PreWrapper = tokenizationInformationDto.PreWrapper,
                 PostWrapper = tokenizationInformationDto.PostWrapper,
-                Identifier = tokenizationInformationDto.Identifier
+                Identifier = tokenizationInformationDto.Identifier,
+                PadIdentifier = tokenizationInformationDto.PadIdentifier,
             };
 
         private ServiceConfigurationInformation Translate(ServiceConfigurationInformationDto serviceConfigurationInformation)

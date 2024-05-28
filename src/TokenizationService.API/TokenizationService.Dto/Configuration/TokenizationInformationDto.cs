@@ -32,5 +32,8 @@ namespace TokenizationService.Dto.Configuration
 
         [Required]
         public string Identifier { get; set; }
+
+        [Required]
+        public string PadIdentifier { get; set; }
     }
 }

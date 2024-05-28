@@ -73,11 +73,15 @@ namespace TokenizationService.Core.API.Services
 
         private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value, string clientId)
         {
+            // I actually need to detect which method it used from the pad byte
+
             var existingToken = await this.tokenRepository.ReadAsync(value.Value);
+
+            // I need to decrypt this
 
             var result = new DetokenizationInformation()
             {
-                Value = existingToken?.Token ?? string.Empty,
+                Value = existingToken.Value ?? string.Empty,
                 Identifier = value.Identifier
             };
 

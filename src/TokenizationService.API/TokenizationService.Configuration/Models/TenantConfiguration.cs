@@ -4,6 +4,7 @@ using System;
 
 namespace TokenizationService.Configuration.Models
 {
+    [BsonIgnoreExtraElements]
     public class TenantConfiguration 
         //: BaseConfigurationObject
     {

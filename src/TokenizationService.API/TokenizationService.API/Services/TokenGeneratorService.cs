@@ -38,7 +38,7 @@ namespace TokenizationService.Core.API.Services
 
             var builder = new StringBuilder();
             builder.Append(tokenizationMethod.PreWrapper);
-            builder.Append(tokenizationMethod.Identifier);
+            builder.Append(tokenizationMethod.PadIdentifier);
             builder.Append(nextValue);
             builder.Append(tokenizationMethod.PostWrapper);
 

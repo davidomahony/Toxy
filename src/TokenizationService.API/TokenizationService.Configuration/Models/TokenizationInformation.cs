@@ -12,5 +12,7 @@ namespace TokenizationService.Configuration.Models
         public string? PreWrapper { get; set; }
         public string? PostWrapper { get; set; }
         public string Identifier { get; set; }
+
+        public string PadIdentifier { get; set; }
     }
 }

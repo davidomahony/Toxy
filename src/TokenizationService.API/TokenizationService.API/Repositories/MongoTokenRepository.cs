@@ -68,7 +68,7 @@ namespace TokenizationService.API.Repositories
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
-            var getFilter = Builders<TokenObject>.Filter.Eq("_id", new ObjectId(id));
+            var getFilter = Builders<TokenObject>.Filter.Eq("Token", id);
             var document = (await this.collection.FindAsync(getFilter)).FirstOrDefaultAsync();
 
             return await document;
