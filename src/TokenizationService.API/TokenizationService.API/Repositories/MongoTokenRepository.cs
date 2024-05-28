@@ -16,10 +16,10 @@ namespace TokenizationService.API.Repositories
             this.connectionString = configuration["MongoConnection"]
                 ?? throw new ArgumentNullException("Missing configuration connection string");
 
-            this.collectionName = configuration["Configuration:CollectionName"]
+            this.collectionName = configuration["Token:CollectionName"]
                 ?? throw new ArgumentNullException("Missing configuration collection name");
 
-            this.dataBaseName = configuration["Configuration:DatabaseName"]
+            this.dataBaseName = configuration["Token:DatabaseName"]
                 ?? throw new ArgumentNullException("Missing configuration database name");
 
             this.Configure();
@@ -57,7 +57,7 @@ namespace TokenizationService.API.Repositories
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
-            var getFilter = Builders<TokenObject>.Filter.Eq("value", value);
+            var getFilter = Builders<TokenObject>.Filter.Eq("Value", value);
             var document = (await this.collection.FindAsync(getFilter)).FirstOrDefaultAsync();
 
             return await document;

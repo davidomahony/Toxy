@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace TokenizationService.API.Repositories
 {
+    [BsonIgnoreExtraElements]
     public class TokenObject
     {
         [BsonId]
@@ -15,7 +16,6 @@ namespace TokenizationService.API.Repositories
         [BsonRepresentation(BsonType.String)]
         public string Value { get; set; }
 
-        [BsonRepresentation(BsonType.String)]
         public int Count { get; set; }
     }
 }

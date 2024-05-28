@@ -52,7 +52,7 @@ namespace TokenizationService.Core.API.Services
             var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue);
             if (existingToken != null)
             {
-                result.Value = existingToken.Value;
+                result.Value = existingToken.Token;
                 return result;
             }
 
