@@ -1,17 +1,18 @@
 ﻿using TokenizationService.API.Repositories;
 using TokenizationService.Core.API.Models;
+using TokenizationService.Core.API.Repositories;
 
 namespace TokenizationService.Core.API.Services
 {
     public class EngineService : IEngineService
     {
-        private readonly IRepository<TokenObject> tokenRepository;
+        private readonly ITokenRepository tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
         private readonly IEncryptionProvider encryptionProvider;
         private readonly ITokenParser tokenParser;
 
         public EngineService(
-            IRepository<TokenObject> tokenRepository,
+            ITokenRepository tokenRepository,
             ITokenServiceGenerator tokenGenerator,
             IEncryptionProvider encryptionProvider,
             ITokenParser tokenParser)
@@ -57,15 +58,17 @@ namespace TokenizationService.Core.API.Services
                 return result;
             }
 
+            // i really dont like using tuples remove me later
             var newToken = await this.tokenGenerator.GenerateNewToken(value, clientId);
-            result.Value = newToken;
+            result.Value = newToken.Item1;
 
             // Boom
             await this.tokenRepository.CreateAsync(
                 new TokenObject
                 {
                     Value = encryptedValue,
-                    Token = newToken
+                    Count = newToken.Item2,
+                    Token = newToken.Item1
                 });
 
             return result;

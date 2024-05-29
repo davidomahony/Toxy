@@ -3,6 +3,10 @@ using MongoDB.Driver;
 
 namespace TokenizationService.API.Repositories
 {
+    /// <summary>
+    /// I want this to be scoped eventually so we have different token types in different repositories, should be more pe
+    /// rformant over time
+    /// </summary>
     public class MongoTokenRepository : TokenRepository
     {
         private string connectionString = string.Empty;
@@ -10,6 +14,7 @@ namespace TokenizationService.API.Repositories
         private string collectionName;
 
         private IMongoCollection<TokenObject> collection = null;
+
 
         public MongoTokenRepository(IConfiguration configuration) : base(configuration)
         {
@@ -40,6 +45,7 @@ namespace TokenizationService.API.Repositories
             var filter = Builders<TokenObject>.Filter.Empty;
             var sort = Builders<TokenObject>.Sort.Descending(x => x.Count);
 
+            // this is not so performant
             var options = new FindOptions<TokenObject>
             {
                 Sort = sort,
@@ -47,9 +53,9 @@ namespace TokenizationService.API.Repositories
             };
 
             var cursor = await collection.FindAsync(filter, options);
-            var result = await cursor.FirstOrDefaultAsync();
+            var result = await cursor.FirstOrDefaultAsync(); // Use FirstOrDefaultAsync to get a single result
 
-            return result.Count + 1;
+            return result?.Count + 1 ?? 1; // If result is null, start from 1
         }
 
         public override async Task<TokenObject?> GetTokenWithValueAsync(string value)
@@ -102,15 +108,6 @@ namespace TokenizationService.API.Repositories
 
         private void Configure()
         {
-            this.connectionString = configuration["MongoConnection"]
-                ?? throw new ArgumentNullException("Missing configuration connection string");
-
-            this.collectionName = configuration["Configuration:CollectionName"]
-                ?? throw new ArgumentNullException("Missing configuration collection name");
-
-            this.dataBaseName = configuration["Configuration:DatabaseName"]
-                ?? throw new ArgumentNullException("Missing configuration database name");
-
             var client = new MongoClient(this.connectionString);
             IMongoDatabase database = client.GetDatabase(dataBaseName);
             this.collection = database.GetCollection<TokenObject>(collectionName);

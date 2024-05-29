@@ -22,7 +22,7 @@ namespace TokenizationService.Core.API.Services
 
         public string Identifier => throw new NotImplementedException();
 
-        public async Task<string> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
+        public async Task<(string, int)> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
         {
             var config = await this.tenantConfiguration.GetConfiguration(clientId);
             if (config == null)
@@ -42,7 +42,7 @@ namespace TokenizationService.Core.API.Services
             builder.Append(nextValue);
             builder.Append(tokenizationMethod.PostWrapper);
 
-            return builder.ToString();
+            return (builder.ToString(), nextValue);
         }
     }
 }
