@@ -4,7 +4,7 @@
     {
         public DetokenizationInformation[] DetokenizationRequestInformation { get; set; }
 
-        public string ClientId;
+        public string ClientId { get; set; }
     }
 
     public class DetokenizationInformation

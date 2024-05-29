@@ -14,8 +14,8 @@ namespace TokenizationService.Core.API.Services
             {
                 using (var des = new DESCryptoServiceProvider())
                 {
-                    des.Key = Encoding.UTF8.GetBytes(key);
-                    des.IV = Encoding.UTF8.GetBytes(salt);
+                    des.Key = Encoding.UTF8.GetBytes(key).Take(8).ToArray();
+                    des.IV = Encoding.UTF8.GetBytes(salt).Take(8).ToArray();
 
                     byte[] encryptedBytes = Convert.FromBase64String(decryptMe);
 

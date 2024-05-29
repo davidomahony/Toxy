@@ -6,6 +6,9 @@ using TokenizationService.Core.API.Models;
 
 namespace TokenizationService.Core.API.Services
 {
+    /// <summary>
+    /// This will lekely need to be done for each token type, date etc
+    /// </summary>
     public class TokenParser : ITokenParser
     {
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfigurationRepo;
@@ -25,11 +28,6 @@ namespace TokenizationService.Core.API.Services
 
             string pattern = @"(-)(\w{2})(.*?)(-\*)"; // this needs to be loaded from cofig
 
-
-            var tokenizationMethod = this.tenantConfiguration.TokenizationInformation?.FirstOrDefault(itm => itm.PadIdentifier.Equals(identifier, StringComparison.OrdinalIgnoreCase));
-            if (tokenizationMethod == null)
-                throw new InvalidOperationException("Unable to locate tokenization method");
-
             var info = new TokenParserInformation();
             Match match = Regex.Match(token, pattern);
             if (match.Success)
@@ -47,7 +45,7 @@ namespace TokenizationService.Core.API.Services
         private async Task FetchWrapper(string clientId)
         {
             this.tenantConfiguration = await this.tenantConfigurationRepo.GetConfiguration(clientId);
-            if (this.tenantConfiguration != null)
+            if (this.tenantConfiguration == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
             // this is fragile i will fix this later

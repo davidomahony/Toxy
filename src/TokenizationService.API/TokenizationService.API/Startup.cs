@@ -16,6 +16,7 @@ namespace TokenizationService.Core.API
             services.AddScoped<ITokenServiceGenerator, TokenGeneratorService>();
             services.AddScoped<IEngineService, EngineService>();
             services.AddScoped<IEncryptionProvider, EncryptionProvider>();
+            services.AddScoped<ITokenParser, TokenParser>();
             services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
             services.AddScoped<IEncryptionService, DesEncryptionService>();
             services.AddScoped<IEncryptionService, RsaEncryptionService>();

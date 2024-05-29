@@ -19,6 +19,23 @@ namespace TokenizationService.Core.API.Services
             this.tenantConfiguration = tenantConfiguration;
         }
 
+        public async Task<string> DecryptString(string input, string tokenTypeIdentifier, string clientId)
+        {
+            var config = await this.tenantConfiguration.GetConfiguration(clientId);
+            if (config == null)
+                throw new InvalidOperationException("Unable to locate configuration for tokenization");
+
+            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.PadIdentifier.Equals(tokenTypeIdentifier, StringComparison.OrdinalIgnoreCase));
+            if (tokenizationMethod == null)
+                throw new InvalidOperationException("Unable to locate tokenization method");
+
+            var service = encryptionServices.FirstOrDefault(itm => itm.Identifier == tokenizationMethod.TokenizationMethod);
+            if (service == null)
+                throw new InvalidOperationException("Unable to identify correct encryption method");
+
+            return service.DecryptString(input, tokenizationMethod.Key, tokenizationMethod.Salt);
+        }
+
         public async Task<string> EncryptString(string input, string tokenType, string clientId)
         {
             var config = await this.tenantConfiguration.GetConfiguration(clientId);

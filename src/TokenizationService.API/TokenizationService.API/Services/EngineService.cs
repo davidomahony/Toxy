@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using TokenizationService.API.Repositories;
+﻿using TokenizationService.API.Repositories;
 using TokenizationService.Core.API.Models;
-using TokenizationService.Core.API.Repositories;
 
 namespace TokenizationService.Core.API.Services
 {
@@ -10,15 +8,18 @@ namespace TokenizationService.Core.API.Services
         private readonly IRepository<TokenObject> tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
         private readonly IEncryptionProvider encryptionProvider;
+        private readonly ITokenParser tokenParser;
 
         public EngineService(
             IRepository<TokenObject> tokenRepository,
             ITokenServiceGenerator tokenGenerator,
-            IEncryptionProvider encryptionProvider)
+            IEncryptionProvider encryptionProvider,
+            ITokenParser tokenParser)
         {
             this.tokenRepository = tokenRepository;
             this.tokenGenerator = tokenGenerator;
             this.encryptionProvider = encryptionProvider;
+            this.tokenParser = tokenParser;
         }
 
         public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values, string clientId)
@@ -70,20 +71,26 @@ namespace TokenizationService.Core.API.Services
             return result;
         }
 
-
         private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value, string clientId)
         {
-            // I actually need to detect which method it used from the pad byte
-
-            var existingToken = await this.tokenRepository.ReadAsync(value.Value);
-
-            // I need to decrypt this
-
             var result = new DetokenizationInformation()
             {
-                Value = existingToken.Value ?? string.Empty,
+                Value =  string.Empty,
                 Identifier = value.Identifier
             };
+
+            var info = await this.tokenParser.ParseToken(value.Value, clientId);
+
+            // I actually need to detect which method it used from the pad byte
+            // I need to have a repository per token type, this should then detect the correct token repository to choose
+            // perhaps the tenant config generates terraform?
+            var existingToken = await this.tokenRepository.ReadAsync(value.Value);
+
+            if (existingToken != null)
+            {
+                var clear = await this.encryptionProvider.DecryptString(existingToken.Value, info.TokenIdentifier, clientId);
+                result.Value = clear;
+            }
 
             return result;
         }
