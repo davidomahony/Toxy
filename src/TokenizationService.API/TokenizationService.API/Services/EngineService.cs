@@ -60,15 +60,15 @@ namespace TokenizationService.Core.API.Services
 
             // i really dont like using tuples remove me later
             var newToken = await this.tokenGenerator.GenerateNewToken(value, clientId);
-            result.Value = newToken.Item1;
+            result.Value = newToken.TokenValue;
 
             // Boom
             await this.tokenRepository.CreateAsync(
                 new TokenObject
                 {
                     Value = encryptedValue,
-                    Count = newToken.Item2,
-                    Token = newToken.Item1
+                    Count = newToken.TokenCount,
+                    Token = newToken.TokenValue
                 });
 
             return result;

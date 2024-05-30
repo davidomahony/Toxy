@@ -20,7 +20,7 @@ namespace TokenizationService.Core.API
             services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
             services.AddScoped<IEncryptionService, DesEncryptionService>();
             services.AddScoped<IEncryptionService, RsaEncryptionService>();
-            services.AddScoped<IRepository<TokenObject>, MongoTokenRepository>();
+            services.AddScoped<ITokenRepository, MongoTokenRepository>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }

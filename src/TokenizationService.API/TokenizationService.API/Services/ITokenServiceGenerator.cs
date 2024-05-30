@@ -8,6 +8,6 @@ namespace TokenizationService.Core.API.Services
     {
         string Identifier { get; }
 
-        Task<(string, int)> GenerateNewToken(TokenizationInformation tokenizationInformation, string client);
+        Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, string client);
     }
 }

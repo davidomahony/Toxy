@@ -9,11 +9,11 @@ namespace TokenizationService.Core.API.Services
 {
     public class TokenGeneratorService : ITokenServiceGenerator
     {
-        private readonly IRepository<TokenObject> tokenRepository;
+        private readonly ITokenRepository tokenRepository;
         private readonly IConfiguration configuration;
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
-        public TokenGeneratorService(IRepository<TokenObject> tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
+        public TokenGeneratorService(ITokenRepository tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
         {
             this.tokenRepository = tokenRepository;
             this.configuration = configuration;
@@ -22,13 +22,13 @@ namespace TokenizationService.Core.API.Services
 
         public string Identifier => throw new NotImplementedException();
 
-        public async Task<(string, int)> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
+        public async Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
         {
             var config = await this.tenantConfiguration.GetConfiguration(clientId);
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
-            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Identifier.Equals(tokenizationInformation.Identifier, StringComparison.OrdinalIgnoreCase));
+            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenizationInformation.Identifier, StringComparison.OrdinalIgnoreCase));
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
@@ -42,7 +42,12 @@ namespace TokenizationService.Core.API.Services
             builder.Append(nextValue);
             builder.Append(tokenizationMethod.PostWrapper);
 
-            return (builder.ToString(), nextValue);
+            return new TokenGeneratorInformation()
+            {
+                TokenCount = nextValue,
+                TokenIdentifier = tokenizationMethod.PadIdentifier,
+                TokenValue = builder.ToString()
+            };
         }
     }
 }

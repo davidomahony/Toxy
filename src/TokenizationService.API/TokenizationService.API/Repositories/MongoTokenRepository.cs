@@ -30,6 +30,11 @@ namespace TokenizationService.API.Repositories
             this.Configure();
         }
 
+        public override Task<bool> CheckIdExists(Guid id, string tokenType)
+        {
+            throw new NotImplementedException();
+        }
+
         public override async Task<TokenObject> CreateAsync(TokenObject entity)
         {
             if (this.collection == null)
@@ -38,6 +43,11 @@ namespace TokenizationService.API.Repositories
             await this.collection.InsertOneAsync(entity);
 
             return entity;
+        }
+
+        public override Task<string> GetNextAvailableToken(string tokenType)
+        {
+            throw new NotImplementedException();
         }
 
         public override async Task<int> GetNextCount()

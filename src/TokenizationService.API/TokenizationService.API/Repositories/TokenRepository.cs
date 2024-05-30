@@ -1,9 +1,10 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
+using TokenizationService.Core.API.Repositories;
 
 namespace TokenizationService.API.Repositories
 {
-    public abstract class TokenRepository : IRepository<TokenObject>
+    public abstract class TokenRepository : ITokenRepository
     {
         protected IConfiguration configuration;
 
@@ -14,7 +15,11 @@ namespace TokenizationService.API.Repositories
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        public abstract Task<bool> CheckIdExists(Guid id, string tokenType);
+
         public abstract Task<TokenObject> CreateAsync(TokenObject entity);
+
+        public abstract Task<string> GetNextAvailableToken(string tokenType);
 
         public abstract Task<int> GetNextCount();
 
