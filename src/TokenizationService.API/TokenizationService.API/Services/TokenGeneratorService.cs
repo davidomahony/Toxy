@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using TokenizationService.API.Repositories;
 using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Models;
@@ -22,13 +21,9 @@ namespace TokenizationService.Core.API.Services
 
         public string Identifier => throw new NotImplementedException();
 
-        public async Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, string clientId)
+        public async Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, TenantConfiguration tenantConfiguration)
         {
-            var config = await this.tenantConfiguration.GetConfiguration(clientId);
-            if (config == null)
-                throw new InvalidOperationException("Unable to locate configuration for tokenization");
-
-            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenizationInformation.Identifier, StringComparison.OrdinalIgnoreCase));
+            var tokenizationMethod = tenantConfiguration.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenizationInformation.TokenIdentifier, StringComparison.OrdinalIgnoreCase));
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 

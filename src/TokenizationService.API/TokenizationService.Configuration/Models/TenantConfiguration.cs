@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using TokenizationService.Configuration.Enums;
 
 namespace TokenizationService.Configuration.Models
 {
@@ -30,5 +31,7 @@ namespace TokenizationService.Configuration.Models
         public DateTime Created { get; set; }
 
         public bool IsActive { get; set; }
+
+        public IEnumerable<TokenRegexInformation> TokenRegexInformation { get; set; }
     }
 }

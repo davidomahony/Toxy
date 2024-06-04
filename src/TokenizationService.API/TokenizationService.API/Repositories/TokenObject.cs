@@ -14,7 +14,7 @@ namespace TokenizationService.API.Repositories
         public string Token { get; set; }
 
         [BsonRepresentation(BsonType.String)]
-        public string Value { get; set; }
+        public string EncryptedValue { get; set; }
 
         public int Count { get; set; }
     }

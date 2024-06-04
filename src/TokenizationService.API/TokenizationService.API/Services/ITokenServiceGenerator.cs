@@ -1,5 +1,6 @@
 ﻿
 
+using TokenizationService.Configuration.Models;
 using TokenizationService.Core.API.Models;
 
 namespace TokenizationService.Core.API.Services
@@ -8,6 +9,6 @@ namespace TokenizationService.Core.API.Services
     {
         string Identifier { get; }
 
-        Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, string client);
+        Task<TokenGeneratorInformation> GenerateNewToken(TokenizationInformation tokenizationInformation, TenantConfiguration tenantConfiguration);
     }
 }

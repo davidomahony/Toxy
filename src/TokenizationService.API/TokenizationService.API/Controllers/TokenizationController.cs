@@ -65,7 +65,7 @@ namespace TokenizationService.API.Controllers
 
             foreach (var tokenInfo in detokenizationInformation.DetokenizationRequestInformation)
             {
-                if (string.IsNullOrEmpty(tokenInfo.Value) || string.IsNullOrEmpty(tokenInfo.Identifier))
+                if (string.IsNullOrEmpty(tokenInfo.Token) || string.IsNullOrEmpty(tokenInfo.TokenIdentifier))
                     return false;
             }
 
@@ -79,7 +79,7 @@ namespace TokenizationService.API.Controllers
 
             foreach (var tokenInfo in tokenizationRequest.TokenizationRequestInformation)
             {
-                if (string.IsNullOrEmpty(tokenInfo.Value) || string.IsNullOrEmpty(tokenInfo.Identifier))
+                if (string.IsNullOrEmpty(tokenInfo.ClearValue) || string.IsNullOrEmpty(tokenInfo.TokenIdentifier))
                     return false;
             }
 

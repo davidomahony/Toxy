@@ -9,8 +9,8 @@
 
     public class TokenizationInformation
     {
-        public string Value { get; set; }
+        public string ClearValue { get; set; }
 
-        public string Identifier { get; set; }
+        public string TokenIdentifier { get; set; }
     }
 }

@@ -12,19 +12,9 @@ namespace TokenizationService.Core.API.Services
     public class TokenParser : ITokenParser
     {
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfigurationRepo;
-        private TenantConfiguration tenantConfiguration;
 
-        private string preWrapper;
-        private string postWrapper;
-
-        public TokenParser(IConfigurationRepository<TenantConfiguration> tenantConfigurarionRepo)
+        public async Task<TokenParserInformation> ParseToken(string token, string tokenType, TenantConfiguration tenantConfiguration)
         {
-            this.tenantConfigurationRepo = tenantConfigurarionRepo;
-        }
-
-        public async Task<TokenParserInformation> ParseToken(string token, string clientId)
-        {
-            await this.FetchWrapper(clientId);
 
             string pattern = @"(-)(\w{2})(.*?)(-\*)"; // this needs to be loaded from cofig
 
@@ -39,18 +29,6 @@ namespace TokenizationService.Core.API.Services
             }
 
             return info;
-        }
-
-
-        private async Task FetchWrapper(string clientId)
-        {
-            this.tenantConfiguration = await this.tenantConfigurationRepo.GetConfiguration(clientId);
-            if (this.tenantConfiguration == null)
-                throw new InvalidOperationException("Unable to locate configuration for tokenization");
-
-            // this is fragile i will fix this later
-            this.preWrapper = this.tenantConfiguration.TokenizationInformation.FirstOrDefault().PreWrapper;
-            this.postWrapper = this.tenantConfiguration.TokenizationInformation.FirstOrDefault().PostWrapper;
         }
     }
 }

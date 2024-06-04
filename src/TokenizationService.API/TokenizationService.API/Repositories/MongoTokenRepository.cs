@@ -108,7 +108,7 @@ namespace TokenizationService.API.Repositories
 
             var filter = Builders<TokenObject>.Filter.Eq(u => u.Id, ObjectId.Parse(id));
             var updateDefinition = Builders<TokenObject>.Update
-                .Set(u => u.Value, entity.Value)
+                .Set(u => u.EncryptedValue, entity.EncryptedValue)
                 .Set(u => u.Count, entity.Count);
 
             await this.collection.UpdateOneAsync(filter, updateDefinition);

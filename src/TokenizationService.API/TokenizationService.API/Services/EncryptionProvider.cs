@@ -19,13 +19,9 @@ namespace TokenizationService.Core.API.Services
             this.tenantConfiguration = tenantConfiguration;
         }
 
-        public async Task<string> DecryptString(string input, string tokenTypeIdentifier, string clientId)
+        public async Task<string> DecryptString(string input, string tokenTypeIdentifier, TenantConfiguration tenantConfiguration)
         {
-            var config = await this.tenantConfiguration.GetConfiguration(clientId);
-            if (config == null)
-                throw new InvalidOperationException("Unable to locate configuration for tokenization");
-
-            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.PadIdentifier.Equals(tokenTypeIdentifier, StringComparison.OrdinalIgnoreCase));
+            var tokenizationMethod = tenantConfiguration.TokenizationInformation?.FirstOrDefault(itm => itm.PadIdentifier.Equals(tokenTypeIdentifier, StringComparison.OrdinalIgnoreCase));
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
@@ -36,13 +32,9 @@ namespace TokenizationService.Core.API.Services
             return service.DecryptString(input, tokenizationMethod.Key, tokenizationMethod.Salt);
         }
 
-        public async Task<string> EncryptString(string input, string tokenType, string clientId)
+        public async Task<string> EncryptString(string input, string tokenType, TenantConfiguration tenantConfiguration)
         {
-            var config = await this.tenantConfiguration.GetConfiguration(clientId);
-            if (config == null)
-                throw new InvalidOperationException("Unable to locate configuration for tokenization");
-
-            var tokenizationMethod = config.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenType, StringComparison.OrdinalIgnoreCase));
+            var tokenizationMethod = tenantConfiguration.TokenizationInformation?.FirstOrDefault(itm => itm.Name.Equals(tokenType, StringComparison.OrdinalIgnoreCase));
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 

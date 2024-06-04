@@ -112,7 +112,6 @@ namespace TokenizationService.Core.API.Controllers
                 DataType = tokenizationInformationDto.DataType,
                 PreWrapper = tokenizationInformationDto.PreWrapper,
                 PostWrapper = tokenizationInformationDto.PostWrapper,
-                Name = tokenizationInformationDto.Identifier,
                 PadIdentifier = tokenizationInformationDto.PadIdentifier,
             };
 
