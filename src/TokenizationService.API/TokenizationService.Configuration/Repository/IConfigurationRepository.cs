@@ -3,7 +3,7 @@ namespace TokenizationService.Configuration.Repository
 {
     public interface IConfigurationRepository<T>
     {
-        Task<T> GetConfiguration(string id);
+        Task<T> GetConfigurationAsync(string id);
 
         Task<List<T>> GetAllConfigurations();
 

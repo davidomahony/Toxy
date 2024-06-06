@@ -24,6 +24,6 @@ namespace TokenizationService.Configuration.Models
 
         public string TokenRegex { get; set; }
 
-        public TokenizationDataType TokenizationDataType { get; set; }
+        public TokenMethodUsed TokenizationDataType { get; set; }
     }
 }

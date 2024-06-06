@@ -32,7 +32,7 @@ namespace TokenizationService.Core.API.Services
         public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values, string clientId)
         {
             var result = new TokenizationInformation[values.Length];
-            var config = await this.tenantConfiguration.GetConfiguration(clientId);
+            var config = await this.tenantConfiguration.GetConfigurationAsync(clientId);
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
@@ -45,12 +45,12 @@ namespace TokenizationService.Core.API.Services
         public async Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens, string clientId)
         {
             var result = new DetokenizationInformation[tokens.Length];
-            var config = await this.tenantConfiguration.GetConfiguration(clientId);
+            var config = await this.tenantConfiguration.GetConfigurationAsync(clientId);
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
             for (int i = 0; i < tokens.Length; i++)
-                result[i] = await this.GenerateTranslationResult(tokens[i], config);
+                result[i] = await this.GenerateTranslationResultAsync(tokens[i], config);
 
             return result;
         }
@@ -88,7 +88,7 @@ namespace TokenizationService.Core.API.Services
             return result;
         }
 
-        private async Task<DetokenizationInformation> GenerateTranslationResult(DetokenizationInformation value, TenantConfiguration tenantConfiguration)
+        private async Task<DetokenizationInformation> GenerateTranslationResultAsync(DetokenizationInformation value, TenantConfiguration tenantConfiguration)
         {
             var result = new DetokenizationInformation()
             {

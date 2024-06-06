@@ -46,7 +46,7 @@ namespace TokenizationService.Configuration.Repository
             await this.collection.DeleteOneAsync(deleteFilter);
         }
 
-        public async Task<TenantConfiguration> GetConfiguration(string id)
+        public async Task<TenantConfiguration> GetConfigurationAsync(string id)
         {
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");

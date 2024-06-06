@@ -32,7 +32,7 @@ namespace TokenizationService.Core.API.Controllers
         [Route("{id}", Name = nameof(FetchTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> FetchTenantConfiguration([Required] string id)
         {
-            var result = await this.repository.GetConfiguration(id);
+            var result = await this.repository.GetConfigurationAsync(id);
             if (result == null)
                 return new NotFoundObjectResult(string.Empty);
 
@@ -81,7 +81,7 @@ namespace TokenizationService.Core.API.Controllers
         [Route("{id}", Name = nameof(UpdateTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> UpdateTenantConfiguration([Required] string id, [Required] AddTenantConfigurationDto modifiedConfiguration)
         {
-            var existing = await this.repository.GetConfiguration(id);
+            var existing = await this.repository.GetConfigurationAsync(id);
             if (existing == null)
                 return new NotFoundObjectResult(string.Empty);
 
