@@ -12,17 +12,16 @@ namespace TokenizationService.Core.API
         {
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
             services.AddScoped<ITokenServiceGenerator, TokenGeneratorService>();
             services.AddScoped<IEngineService, EngineService>();
             services.AddScoped<IEncryptionProvider, EncryptionProvider>();
             services.AddScoped<ITokenParser, TokenParser>();
-            services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
             services.AddScoped<IEncryptionService, DesEncryptionService>();
             services.AddScoped<IEncryptionService, RsaEncryptionService>();
-            services.AddScoped<ITokenRepository, MongoTokenRepository>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            this.RegisterRepositories(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +47,12 @@ namespace TokenizationService.Core.API
 
             app.UseSwagger();
             app.UseSwaggerUI();
+        }
+
+        protected virtual void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
+            services.AddScoped<ITokenRepository, MongoTokenRepository>();
         }
     }
 }

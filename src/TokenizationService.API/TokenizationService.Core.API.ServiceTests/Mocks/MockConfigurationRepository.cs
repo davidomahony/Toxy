@@ -4,9 +4,25 @@ using TokenizationService.Configuration.Repository;
 
 namespace TokenizationService.Core.API.ServiceTests.Mocks
 {
-    internal class MockConfigurationRepository : IConfigurationRepository<TenantConfiguration>
+    public class MockConfigurationRepository : IConfigurationRepository<TenantConfiguration>
     {
+        public static ObjectId IdForGet = ObjectId.GenerateNewId();
+        public static ObjectId IdForDelete = ObjectId.GenerateNewId();
+        public static ObjectId IdForUpdate = ObjectId.GenerateNewId();
         private List<TenantConfiguration> tenantConfigurations = new List<TenantConfiguration>();
+
+        public MockConfigurationRepository()
+        {
+            var testGet = new TenantConfiguration()
+            {
+                Id = IdForGet,
+                TokenizationInformation = new List<TokenizationConfigurationInformation>(),
+                ServiceConfigurationInformation = new List<ServiceConfigurationInformation>(),
+                TokenRegexInformation = new List<TokenRegexInformation>()
+            };
+
+            this.tenantConfigurations.Add(testGet);
+        }
 
         public Task<TenantConfiguration> AddConfiguration(TenantConfiguration configurationToAdd)
         {
