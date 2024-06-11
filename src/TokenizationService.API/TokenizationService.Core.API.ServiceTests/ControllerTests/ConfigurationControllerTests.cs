@@ -9,7 +9,8 @@ namespace TokenizationService.Core.API.ServiceTests.ControllerTests
         [Test]
         public async Task ConfigurationControllerTests_GetAll()
         {
-            var response = await client.GetAsync("Configuration");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/configuration");
+            HttpResponseMessage response = await client.SendAsync(request);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode); 
 

@@ -42,7 +42,6 @@ namespace TokenizationService.Core.API.Controllers
         }
 
         [HttpGet]
-        [Route("", Name = nameof(FetchAllTenantConfiguration))]
         public async Task<ActionResult<TenantConfigurationDto>> FetchAllTenantConfiguration()
         {
             var result = await this.repository.GetAllConfigurations();
