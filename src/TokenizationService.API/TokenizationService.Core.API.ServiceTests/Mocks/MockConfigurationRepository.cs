@@ -16,6 +16,10 @@ namespace TokenizationService.Core.API.ServiceTests.Mocks
             var testGet = new TenantConfiguration()
             {
                 Id = IdForGet,
+                Name = "TestName",
+                Created = DateTime.MaxValue,
+                IsActive = true,
+                Tags = new Dictionary<string, string>(),
                 TokenizationInformation = new List<TokenizationConfigurationInformation>(),
                 ServiceConfigurationInformation = new List<ServiceConfigurationInformation>(),
                 TokenRegexInformation = new List<TokenRegexInformation>()

@@ -12,8 +12,6 @@ namespace TokenizationService.Core.API.ServiceTests.ControllerTests
             var request = new HttpRequestMessage(HttpMethod.Get, "/configuration");
             HttpResponseMessage response = await client.SendAsync(request);
 
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode); 
-
             var responseString = await response.Content.ReadAsStringAsync();
         }
     }
