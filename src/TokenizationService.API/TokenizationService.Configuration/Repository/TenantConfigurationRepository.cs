@@ -32,6 +32,8 @@ namespace TokenizationService.Configuration.Repository
             if (this.collection == null)
                 throw new InvalidOperationException("Unable to perform action without valid connection");
 
+            configurationToAdd.Id = ObjectId.GenerateNewId();
+
             await this.collection.InsertOneAsync(configurationToAdd);
 
             return configurationToAdd;
@@ -71,6 +73,7 @@ namespace TokenizationService.Configuration.Repository
                 .Set(u => u.IsActive, configurationToUpdate.IsActive)
                 .Set(u => u.TokenizationInformation, configurationToUpdate.TokenizationInformation)
                 .Set(u => u.ServiceConfigurationInformation, configurationToUpdate.ServiceConfigurationInformation)
+                .Set(u => u.TokenRegexInformation, configurationToUpdate.TokenRegexInformation)
                 .Set(u => u.Created, configurationToUpdate.Created);
 
             await this.collection.UpdateOneAsync(filter, updateDefinition);
@@ -87,9 +90,9 @@ namespace TokenizationService.Configuration.Repository
             var filter = Builders<TenantConfiguration>.Filter.Empty;
 
             // Retrieve all documents from the collection
-            var documents = await this.collection.Find(filter).ToListAsync();
+            var documents = await this.collection.FindAsync(filter);
 
-            return documents?.ToList();
+            return documents.ToList();
         }
 
         private void Configure()

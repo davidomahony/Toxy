@@ -8,11 +8,10 @@ namespace TokenizationService.Core.API.Utilities
     {
         public MappingProfile()
         {
-            CreateMap<TenantConfiguration, TenantConfigurationDto>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ReverseMap();
+            CreateMap<TenantConfiguration, TenantConfigurationDto>().ReverseMap();
             CreateMap<ServiceConfigurationInformation, ServiceConfigurationInformationDto>().ReverseMap();
             CreateMap<TokenizationConfigurationInformation, TokenizationInformationDto>().ReverseMap();
+            CreateMap<TokenRegexInformation, TokenRegexInformationDto>().ReverseMap();
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TokenizationService.Dto.Configuration
 {
@@ -29,6 +23,8 @@ namespace TokenizationService.Dto.Configuration
         public IEnumerable<ServiceConfigurationInformationDto>? ServiceConfigurationInformation { get; set; }
 
         public IEnumerable<TokenizationInformationDto>? TokenizationInformation { get; set; }
+
+        public IEnumerable<TokenRegexInformationDto>? TokenRegexInformation { get; set; }
 
         public bool IsActive { get; set; }
     }

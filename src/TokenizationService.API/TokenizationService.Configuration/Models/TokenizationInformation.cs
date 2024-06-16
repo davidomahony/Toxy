@@ -18,8 +18,6 @@ namespace TokenizationService.Configuration.Models
 
         public string? PostWrapper { get; set; }
 
-        public string Name { get; set; }
-
         public string PadIdentifier { get; set; }
 
         public string TokenRegex { get; set; }

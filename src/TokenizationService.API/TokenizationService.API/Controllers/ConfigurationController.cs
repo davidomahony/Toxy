@@ -70,6 +70,14 @@ namespace TokenizationService.Core.API.Controllers
                 newConfiguration.TokenizationInformation = addTenantConfiguration.TokenizationInformation
                     .Select(itm => this.Translate(itm));
 
+            if (addTenantConfiguration.TokenRegexInformation != null)
+                newConfiguration.TokenRegexInformation = addTenantConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
+                {
+                    TokenRegexDetector = itm.TokenRegexDetector,
+                    TokenMethodUsed = itm.TokenMethodUsed,
+                    TokenPartDisector = itm.TokenPartDisector
+                });
+
             var result = await this.repository.AddConfiguration(newConfiguration);
 
             return new OkObjectResult(result);
@@ -96,6 +104,14 @@ namespace TokenizationService.Core.API.Controllers
                     .Select(itm => this.Translate(itm));
             else existing.TokenizationInformation = null;
 
+            if (modifiedConfiguration.TokenRegexInformation != null)
+                existing.TokenRegexInformation = modifiedConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
+                {
+                    TokenRegexDetector = itm.TokenRegexDetector,
+                    TokenMethodUsed = itm.TokenMethodUsed,
+                    TokenPartDisector = itm.TokenPartDisector
+                });
+
             var result = await this.repository.UpdateConfiguration(id, existing);
 
             return new OkObjectResult(result);
@@ -119,7 +135,7 @@ namespace TokenizationService.Core.API.Controllers
             {
                 Name = serviceConfigurationInformation.Name,
                 AllowedInboundIps = serviceConfigurationInformation.AllowedInboundIps,
-                AllowedOutboundIps = serviceConfigurationInformation.AllowedOutboundIps
+                AllowedOutboundIps = serviceConfigurationInformation.AllowedOutboundIps,
             };
     }
 }

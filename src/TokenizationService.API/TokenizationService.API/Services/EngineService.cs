@@ -60,21 +60,21 @@ namespace TokenizationService.Core.API.Services
         {
             var result = new TokenizationInformation()
             {
-                ClearValue = string.Empty,
+                TokenValue = string.Empty,
                 TokenIdentifier = value.TokenIdentifier
             };
 
-            var encryptedValue = await this.encryptionProvider.EncryptString(value.ClearValue, value.TokenIdentifier, tenantConfiguration);
+            var encryptedValue = await this.encryptionProvider.EncryptString(value.TokenValue, value.TokenIdentifier, tenantConfiguration);
             var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue);
             if (existingToken != null)
             {
-                result.ClearValue = existingToken.Token;
+                result.TokenValue = existingToken.Token;
                 return result;
             }
 
             // i really dont like using tuples remove me later
             var newToken = await this.tokenGenerator.GenerateNewToken(value, tenantConfiguration);
-            result.ClearValue = newToken.TokenValue;
+            result.TokenValue = newToken.TokenValue;
 
             // Boom
             await this.tokenRepository.CreateAsync(

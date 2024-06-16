@@ -9,7 +9,7 @@
 
     public class DetokenizationInformation
     {
-        public string Token { get; set; }
+        public string TokenValue { get; set; }
 
         public string TokenIdentifier { get; set; }
     }

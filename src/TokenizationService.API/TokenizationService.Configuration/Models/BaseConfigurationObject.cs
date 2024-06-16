@@ -12,5 +12,9 @@ namespace TokenizationService.Configuration.Models
         /// DIctionary used for chucking information into
         /// </summary>
         public Dictionary<string, string>? Tags { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

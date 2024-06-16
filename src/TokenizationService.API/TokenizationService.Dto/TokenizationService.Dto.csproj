@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TokenizationService.Configuration\TokenizationService.Configuration.csproj" />
     <ProjectReference Include="..\TokenizationService.Enums\TokenizationService.Enums.csproj" />
   </ItemGroup>
 
