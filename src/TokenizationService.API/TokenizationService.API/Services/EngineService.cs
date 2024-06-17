@@ -9,14 +9,14 @@ namespace TokenizationService.Core.API.Services
 {
     public class EngineService : IEngineService
     {
-        private readonly ITokenRepository tokenRepository;
+        private readonly IGenericTokenRepository tokenRepository;
         private readonly ITokenServiceGenerator tokenGenerator;
         private readonly IEncryptionProvider encryptionProvider;
         private readonly ITokenParser tokenParser;
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
         public EngineService(
-            ITokenRepository tokenRepository,
+            IGenericTokenRepository tokenRepository,
             ITokenServiceGenerator tokenGenerator,
             IEncryptionProvider encryptionProvider,
             ITokenParser tokenParser,
@@ -65,7 +65,7 @@ namespace TokenizationService.Core.API.Services
             };
 
             var encryptedValue = await this.encryptionProvider.EncryptString(value.TokenValue, value.TokenIdentifier, tenantConfiguration);
-            var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue);
+            var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue, value.TokenIdentifier);
             if (existingToken != null)
             {
                 result.TokenValue = existingToken.Token;
@@ -83,7 +83,7 @@ namespace TokenizationService.Core.API.Services
                     EncryptedValue = encryptedValue,
                     Count = newToken.TokenCount,
                     Token = newToken.TokenValue
-                });
+                }, value.TokenIdentifier);
 
             return result;
         }
@@ -92,21 +92,21 @@ namespace TokenizationService.Core.API.Services
         {
             var result = new DetokenizationInformation()
             {
-                Token =  string.Empty,
+                TokenValue =  string.Empty,
                 TokenIdentifier = value.TokenIdentifier
             };
 
-            var info = await this.tokenParser.ParseToken(value.Token, value.TokenIdentifier, tenantConfiguration);
+            var info = await this.tokenParser.ParseToken(value.TokenValue, value.TokenIdentifier, tenantConfiguration);
 
             // I actually need to detect which method it used from the pad byte
             // I need to have a repository per token type, this should then detect the correct token repository to choose
             // perhaps the tenant config generates terraform?
-            var existingToken = await this.tokenRepository.ReadAsync(value.Token);
+            var existingToken = await this.tokenRepository.ReadAsync(value.TokenValue, value.TokenIdentifier);
 
             if (existingToken != null)
             {
                 var clear = await this.encryptionProvider.DecryptString(existingToken.EncryptedValue, info.TokenIdentifier, tenantConfiguration);
-                result.Token = clear;
+                result.TokenValue = clear;
             }
 
             return result;

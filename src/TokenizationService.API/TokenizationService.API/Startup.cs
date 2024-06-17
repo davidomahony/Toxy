@@ -52,7 +52,7 @@ namespace TokenizationService.Core.API
         protected virtual void RegisterRepositories(IServiceCollection services)
         {
             services.AddScoped<IConfigurationRepository<TenantConfiguration>, TenantConfigurationRepository>();
-            services.AddScoped<ITokenRepository, MongoTokenRepository>();
+            services.AddScoped<IGenericTokenRepository, MongoGenericStringTokenRepository>();
         }
     }
 }

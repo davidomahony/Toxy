@@ -8,11 +8,11 @@ namespace TokenizationService.Core.API.Services
 {
     public class TokenGeneratorService : ITokenServiceGenerator
     {
-        private readonly ITokenRepository tokenRepository;
+        private readonly IGenericTokenRepository tokenRepository;
         private readonly IConfiguration configuration;
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
-        public TokenGeneratorService(ITokenRepository tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
+        public TokenGeneratorService(IGenericTokenRepository tokenRepository, IConfiguration configuration, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
         {
             this.tokenRepository = tokenRepository;
             this.configuration = configuration;
@@ -27,7 +27,7 @@ namespace TokenizationService.Core.API.Services
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
-            var nextValue = await this.tokenRepository.GetNextCount();
+            var nextValue = await this.tokenRepository.GetNextCount(tokenizationMethod.Name);
 
             // right now I am lazy, I should really convert the next value to string with letters
 

@@ -65,7 +65,7 @@ namespace TokenizationService.API.Controllers
 
             foreach (var tokenInfo in detokenizationInformation.DetokenizationRequestInformation)
             {
-                if (string.IsNullOrEmpty(tokenInfo.Token) || string.IsNullOrEmpty(tokenInfo.TokenIdentifier))
+                if (string.IsNullOrEmpty(tokenInfo.TokenValue) || string.IsNullOrEmpty(tokenInfo.TokenIdentifier))
                     return false;
             }
 
