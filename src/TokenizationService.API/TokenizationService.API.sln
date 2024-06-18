@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Enums",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Configuration.Tests", "TokenizationService.Configuration.Tests\TokenizationService.Configuration.Tests.csproj", "{D12FB238-CC35-4A61-8323-6E865157E41B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Core.API.ServiceTests", "TokenizationService.Core.API.ServiceTests\TokenizationService.Core.API.ServiceTests.csproj", "{5974C121-5037-4D98-9F09-BCD19870E640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenizationService.Core.API.Tests", "TokenizationService.Core.API.ServiceTests\TokenizationService.Core.API.Tests.csproj", "{5974C121-5037-4D98-9F09-BCD19870E640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

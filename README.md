@@ -14,6 +14,7 @@ Main Service
 - Instead of having count in the token, I need a string
 - AES encryption
 - RSA Encryption
-- Get Regexes from Config
 - I need caches, so slow
-- Restrictions on setting tenant configuration
+- Restrictions on setting tenant configuration, token names need to be gated as this will create a new collection.  
+    No they dont, same tokens can be shared across configs
+- Likely need terraform to show this being built

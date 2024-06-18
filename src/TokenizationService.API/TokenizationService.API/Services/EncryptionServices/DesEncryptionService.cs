@@ -2,7 +2,7 @@
 using System.Text;
 using TokenizationService.Enums.Configuration;
 
-namespace TokenizationService.Core.API.Services
+namespace TokenizationService.Core.API.Services.EncryptionServices
 {
     public class DesEncryptionService : IEncryptionService
     {
@@ -14,8 +14,8 @@ namespace TokenizationService.Core.API.Services
             {
                 using (var des = new DESCryptoServiceProvider())
                 {
-                    des.Key = Encoding.UTF8.GetBytes(key).Take(8).ToArray();// TODO
-                    des.IV = Encoding.UTF8.GetBytes(salt).Take(8).ToArray();// TODO
+                    des.Key = ConvertToByteArray(key, 8);
+                    des.IV = ConvertToByteArray(salt, 8);
 
                     byte[] encryptedBytes = Convert.FromBase64String(decryptMe);
 
@@ -39,8 +39,8 @@ namespace TokenizationService.Core.API.Services
             {
                 using (var des = new DESCryptoServiceProvider())
                 {
-                    des.Key = Encoding.UTF8.GetBytes(key).Take(8).ToArray();// TODO
-                    des.IV = Encoding.ASCII.GetBytes(salt).Take(8).ToArray();// TODO
+                    des.Key = ConvertToByteArray(key, 8);
+                    des.IV = ConvertToByteArray(salt, 8);
 
                     byte[] inputBytes = Encoding.UTF8.GetBytes(encryptMe);
 
@@ -56,6 +56,14 @@ namespace TokenizationService.Core.API.Services
                 Console.WriteLine($"Error during encryption: {ex.Message}");
                 throw;
             }
+        }
+
+
+        public static byte[] ConvertToByteArray(string str, int size)
+        {
+            byte[] bytes = new byte[size];
+            bytes = Encoding.UTF8.GetBytes(str.PadRight(bytes.Length));
+            return bytes.Take(size).ToArray();
         }
     }
 }

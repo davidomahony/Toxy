@@ -3,6 +3,7 @@ using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Repositories;
 using TokenizationService.Core.API.Services;
+using TokenizationService.Core.API.Services.EncryptionServices;
 
 namespace TokenizationService.Core.API
 {

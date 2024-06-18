@@ -2,7 +2,7 @@
 using System.Text;
 using TokenizationService.Enums.Configuration;
 
-namespace TokenizationService.Core.API.Services
+namespace TokenizationService.Core.API.Services.EncryptionServices
 {
     public class RsaEncryptionService : IEncryptionService
     {
@@ -17,12 +17,11 @@ namespace TokenizationService.Core.API.Services
                     rsa.FromXmlString(key);
 
                     byte[] encryptedBytes = Convert.FromBase64String(decryptMe);
-
                     byte[] decryptedBytes = rsa.Decrypt(encryptedBytes, false);
 
                     int saltLength = Encoding.UTF8.GetByteCount(salt);
                     byte[] originalBytes = new byte[decryptedBytes.Length - saltLength];
-                    Array.Copy(decryptedBytes, saltLength, originalBytes, 0, originalBytes.Length);
+                    Array.Copy(decryptedBytes, 0, originalBytes, 0, decryptedBytes.Length - saltLength);
 
                     return Encoding.UTF8.GetString(originalBytes);
                 }
