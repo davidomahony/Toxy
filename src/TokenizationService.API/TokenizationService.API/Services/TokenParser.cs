@@ -17,7 +17,7 @@ namespace TokenizationService.Core.API.Services
             if (tokenizationType == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
-            var regexInfo = tenantConfiguration.TokenRegexInformation.FirstOrDefault(itm => itm.TokenMethodUsed == tokenizationType.TokenizationDataType);
+            var regexInfo = tenantConfiguration.TokenRegexInformation.FirstOrDefault(itm => itm.TokenizationMethodUsed == tokenizationType.TokenizationMethod);
             if (regexInfo == null)
                 throw new InvalidOperationException("Unable to locate disection pattern");
          //   string pattern = @"(-)(\w{2})(.*?)(-\*)"; // this needs to be loaded from cofig

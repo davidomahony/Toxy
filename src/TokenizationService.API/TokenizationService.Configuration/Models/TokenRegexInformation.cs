@@ -8,16 +8,16 @@ namespace TokenizationService.Configuration.Models
         /// <summary>
         /// What type of token method we are using
         /// </summary>
-        public TokenMethodUsed TokenMethodUsed { get; set; }
+        public TokenMethodUsed TokenizationMethodUsed { get; set; }
 
         /// <summary>
         /// Regex used to detect in large text strings
         /// </summary>
-        public string TokenRegexDetector { get; set; }
+        public string? TokenRegexDetector { get; set; }
 
         /// <summary>
         /// Regex used to split the token to get useful infomration
         /// </summary>
-        public string TokenPartDisector { get; set; }
+        public string? TokenPartDisector { get; set; }
     }
 }

@@ -74,7 +74,7 @@ namespace TokenizationService.Core.API.Controllers
                 newConfiguration.TokenRegexInformation = addTenantConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
                 {
                     TokenRegexDetector = itm.TokenRegexDetector,
-                    TokenMethodUsed = itm.TokenMethodUsed,
+                    TokenizationMethodUsed = itm.TokenMethodUsed,
                     TokenPartDisector = itm.TokenPartDisector
                 });
 
@@ -108,7 +108,7 @@ namespace TokenizationService.Core.API.Controllers
                 existing.TokenRegexInformation = modifiedConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
                 {
                     TokenRegexDetector = itm.TokenRegexDetector,
-                    TokenMethodUsed = itm.TokenMethodUsed,
+                    TokenizationMethodUsed = itm.TokenMethodUsed,
                     TokenPartDisector = itm.TokenPartDisector
                 });
 
@@ -121,7 +121,7 @@ namespace TokenizationService.Core.API.Controllers
             => new TokenizationConfigurationInformation()
             {
                 Name = tokenizationInformationDto.Name,
-                TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
+                EncryptionType = tokenizationInformationDto.TokenizationMethod,
                 Salt = tokenizationInformationDto.Salt,
                 Key = tokenizationInformationDto.Key,
                 DataType = tokenizationInformationDto.DataType,

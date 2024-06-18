@@ -1,12 +1,14 @@
 ﻿
+using MongoDB.Bson.Serialization.Attributes;
 using TokenizationService.Configuration.Enums;
 using TokenizationService.Enums.Configuration;
 
 namespace TokenizationService.Configuration.Models
 {
+    [BsonIgnoreExtraElements]
     public class TokenizationConfigurationInformation : BaseConfigurationObject
     {
-        public EncryptionType TokenizationMethod { get; set; }
+        public EncryptionType EncryptionType { get; set; }
 
         public string? Key { get; set; }
 
@@ -18,10 +20,8 @@ namespace TokenizationService.Configuration.Models
 
         public string? PostWrapper { get; set; }
 
-        public string PadIdentifier { get; set; }
+        public string? PadIdentifier { get; set; }
 
-        public string TokenRegex { get; set; }
-
-        public TokenMethodUsed TokenizationDataType { get; set; }
+        public TokenMethodUsed TokenizationMethod { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace TokenizationService.Core.API.Services
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
-            var service = encryptionServices.FirstOrDefault(itm => itm.Identifier == tokenizationMethod.TokenizationMethod);
+            var service = encryptionServices.FirstOrDefault(itm => itm.Identifier == tokenizationMethod.EncryptionType);
             if (service == null)
                 throw new InvalidOperationException("Unable to identify correct encryption method");
 
@@ -38,7 +38,7 @@ namespace TokenizationService.Core.API.Services
             if (tokenizationMethod == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
-            var service = encryptionServices.FirstOrDefault(itm => itm.Identifier == tokenizationMethod.TokenizationMethod);
+            var service = encryptionServices.FirstOrDefault(itm => itm.Identifier == tokenizationMethod.EncryptionType);
             if (service == null)
                 throw new InvalidOperationException("Unable to identify correct encryption method");
 
