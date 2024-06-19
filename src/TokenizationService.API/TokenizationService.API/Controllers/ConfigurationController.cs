@@ -121,13 +121,16 @@ namespace TokenizationService.Core.API.Controllers
             => new TokenizationConfigurationInformation()
             {
                 Name = tokenizationInformationDto.Name,
-                EncryptionType = tokenizationInformationDto.TokenizationMethod,
+                EncryptionType = tokenizationInformationDto.EncryptionType,
+                TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
                 Salt = tokenizationInformationDto.Salt,
                 Key = tokenizationInformationDto.Key,
                 DataType = tokenizationInformationDto.DataType,
                 PreWrapper = tokenizationInformationDto.PreWrapper,
                 PostWrapper = tokenizationInformationDto.PostWrapper,
                 PadIdentifier = tokenizationInformationDto.PadIdentifier,
+                IsActive = tokenizationInformationDto.IsActive,
+                Tags = tokenizationInformationDto.Tags,
             };
 
         private ServiceConfigurationInformation Translate(ServiceConfigurationInformationDto serviceConfigurationInformation)

@@ -67,6 +67,8 @@ namespace TokenizationService.Configuration.Repository
             if (configurationToUpdate == null)
                 throw new ArgumentNullException(nameof(configurationToUpdate));
 
+            // TODO PAD Identifier need to be unique per token type
+
             var filter = Builders<TenantConfiguration>.Filter.Eq(u => u.Id, ObjectId.Parse(id));
             var updateDefinition = Builders<TenantConfiguration>.Update
                 .Set(u => u.Name, configurationToUpdate.Name)

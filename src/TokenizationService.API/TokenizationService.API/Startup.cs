@@ -19,6 +19,7 @@ namespace TokenizationService.Core.API
             services.AddScoped<ITokenParser, TokenParser>();
             services.AddScoped<IEncryptionService, DesEncryptionService>();
             services.AddScoped<IEncryptionService, RsaEncryptionService>();
+            services.AddScoped<IEncryptionService, AesEncryptionService>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
