@@ -28,8 +28,9 @@ Main Service
 - Authentication
     - Nearly there need to get claims back in the token
 - Logging/Telemetry
+- Potential use of ai for detecting anomalies
 - Configuration Validation
-    - Can be slower if it envolves getting a more valid
+    - Can be slower if it envolves getting a more valid, read write frequency is a bit slower so that bit.
 - Security Pieces
     - KeyVault
 

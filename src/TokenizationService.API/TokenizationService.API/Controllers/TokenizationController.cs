@@ -21,7 +21,7 @@ namespace TokenizationService.API.Controllers
 
         [HttpPost]
         [Route("detokenize", Name = nameof(Detokenize))]
-        [Authorize("read:messages")]
+        [Authorize()]
         public async Task<ActionResult<DetokenizationResponse>> Detokenize(DetokenizationRequest detokenizationRequest)
         {
             // Validate request
@@ -42,7 +42,7 @@ namespace TokenizationService.API.Controllers
 
         [HttpPost]
         [Route("tokenize", Name = nameof(Tokenize))]
-        [Authorize("read:messages")]
+        [Authorize()]
         public async Task<ActionResult<TokenizationResponse>> Tokenize(TokenizationRequest tokenizationRequest)
         {
             // Validate requests

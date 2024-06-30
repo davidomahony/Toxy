@@ -9,8 +9,8 @@ namespace TokenizationService.Core.API.Handlers
             PrivilegeIdentifier requirement)
         {
             // If user does not have the scope claim, get out of here
-            if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == requirement.Issuer))
-                return Task.CompletedTask;
+            //if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == requirement.Issuer))
+            //    return Task.CompletedTask;
 
             // Split the scopes string into an array
             var scopes = context.User

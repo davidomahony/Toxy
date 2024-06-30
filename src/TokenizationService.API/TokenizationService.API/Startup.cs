@@ -45,25 +45,24 @@ namespace TokenizationService.Core.API
             })
               .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
               {
-                  options.Audience = "https://localhost:7160/";
                   options.Authority = $"https://{configuration["Auth0:Domain"]}/";
                   options.Audience = configuration["Auth0:Audience"];
-                  options.TokenValidationParameters = new TokenValidationParameters
-                  {
-                      NameClaimType = ClaimTypes.NameIdentifier
-                  };
+                  //options.TokenValidationParameters = new TokenValidationParameters
+                  //{
+                  //    NameClaimType = ClaimTypes.NameIdentifier
+                  //};
               });
 
-            services
-              .AddAuthorization(options =>
-              {
-                  options.AddPolicy(
-                    "read:messages",
-                    policy => policy.Requirements.Add(
-                      new PrivilegeIdentifier("read:messages", configuration["Auth0:Domain"])
-                    )
-                  );
-              });
+            //services
+            //  .AddAuthorization(options =>
+            //  {
+            //      options.AddPolicy(
+            //        "read:messages",
+            //        policy => policy.Requirements.Add(
+            //          new PrivilegeIdentifier("read:messages", configuration["Auth0:Domain"])
+            //        )
+            //      );
+            //  });
 
             services.AddSingleton<IAuthorizationHandler, AuthorizationPrivilegeHandler>();
 
