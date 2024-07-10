@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Handlers;
@@ -40,29 +41,22 @@ namespace TokenizationService.Core.API
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
             })
-              .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-              {
-                  options.Authority = $"https://{configuration["Auth0:Domain"]}/";
-                  options.Audience = configuration["Auth0:Audience"];
-                  //options.TokenValidationParameters = new TokenValidationParameters
-                  //{
-                  //    NameClaimType = ClaimTypes.NameIdentifier
-                  //};
-              });
-
-            //services
-            //  .AddAuthorization(options =>
-            //  {
-            //      options.AddPolicy(
-            //        "read:messages",
-            //        policy => policy.Requirements.Add(
-            //          new PrivilegeIdentifier("read:messages", configuration["Auth0:Domain"])
-            //        )
-            //      );
-            //  });
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://sts.windows.net/d8e58558-f723-4498-847d-a4f6802171a5/"; // replace with your authority URL
+                    options.Audience = "api://c44f4f2a-9018-4dac-a6d4-5bc46aa619a8"; // replace with your audience URL
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://sts.windows.net/d8e58558-f723-4498-847d-a4f6802171a5/", // replace with your issuer URL
+                        ValidateIssuerSigningKey = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-signing-key")), // replace with your signing key
+                        ValidateLifetime = true
+                    };
+                });
 
             services.AddSingleton<IAuthorizationHandler, AuthorizationPrivilegeHandler>();
 
