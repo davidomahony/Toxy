@@ -12,7 +12,5 @@ namespace TokenizationService.Configuration.Models
         public IEnumerable<ServiceConfigurationInformation>? ServiceConfigurationInformation { get; set; }
 
         public IEnumerable<TokenizationConfigurationInformation>? TokenizationInformation { get; set; }
-
-        public IEnumerable<TokenRegexInformation>? TokenRegexInformation { get; set; }
     }
 }
