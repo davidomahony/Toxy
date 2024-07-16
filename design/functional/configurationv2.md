@@ -1,54 +1,8 @@
 # Configuration
 
-I want one simple configuration to rule them all, but as there is so many moving parts we need to split them up per component. Right now we can assume we have two components. Each component has its own configuration with a main configuration which looks after general rules also.
+V1 configuration was overly complex for what it needed, lets fix this and keep it simple stupid
 
-## Core
-This will be the main configuration, looks after the various information relating to the tokens, which are app agnostic. Parts of this will need to be fetched from a keyvault
-- Number of tokens
-- Token type
-- Services
-
-```json
-
-{
-    "tokenizationMethods":
-    [
-        {
-            "name": "string",
-            "id": "guid",
-            "methodUsed": "",
-            "key" : "", // key vault
-            "salt": "", // key vault
-            "className": "string",
-            "propertyName": "string",
-            "otherIdentifier": "string",
-            "dataType": "string",
-            "tokenRegexDetector": "(-)(\\w{2})(.*?)(-\\*)",
-            "preWrapper": "<" ,
-            "postWrapper": ">" ,
-        }
-    ],
-    "services":
-    [
-        {
-            "name": "string",
-            "id": "guid",
-            "url": "", // key vault
-            "iprange": "", // key vault
-            "readAccess" : [
-                "allowedUpn" // again key vault
-            ],
-            "writeAccess": [
-                "allowedUpn" // again key vault
-            ]
-        }
-    ]
-  ]
-}
-
-```
-
-I think this configuration is a bit complex, lets see if we can simplify it
+### Lets consider some flows 
 
 Basic Core Flow Tokenization
 
@@ -98,14 +52,43 @@ Previous configuration was too messy, it needs to be simplified
     - Also we will have more reads then writes
 
 
+```json
 
+{
+    "tokenizationMethods":
+    [
+        {
+            "name": "string",
+            "id": "guid",
 
-## Proxy
-- Endpoints
-- Fields
-- How to detect tokens
+            "key" : "string", // string stored in key vault
+            "salt": "string", // string stored in key vault
+            "encryptionType": "enum", // Enum based on whats available
+            "methodUsed": "enum", // Enum: Date, String, CardNumber etc
 
+            "preWrapper": "<" ,
+            "postWrapper": ">" ,
+            "padIdentifier": "string", // identifies token
+            "tokenDetectorRegex": "string", // used to detect a token in a large text file
+            "tokenParsingRegex": "string", // used to split a token into --> |TokenStart|TokenSubTypeId|TokenMappingValue|TokenEnd|
+        }
+    ],
+    "services":
+    [
+        {
+            "name": "string",
+            "id": "guid",
+            "url": "", // key vault
+            "iprange": "", // key vault
+            "readAccess" : [
+                "allowedUpn" // again key vault
+            ],
+            "writeAccess": [
+                "allowedUpn" // again key vault
+            ]
+        }
+    ]
+  ]
+}
 
-
-
-
+```
