@@ -20,7 +20,21 @@ namespace TokenizationService.Core.API.ServiceTests.Mocks
                 Created = DateTime.MaxValue,
                 IsActive = true,
                 Tags = new Dictionary<string, string>(),
-                TokenizationInformation = new List<TokenizationConfigurationInformation>(),
+                TokenizationInformation = new List<TokenizationConfigurationInformation>()
+                {
+                    new TokenizationConfigurationInformation()
+                    {
+                        PadIdentifier = "a",
+                        DataType = "String",
+                        Salt = "3",
+                        EncryptionType = Enums.Configuration.EncryptionType.RSA,
+                        PreWrapper = "cat",
+                        PostWrapper = "cas",
+                        Name = "TestOne",
+                        Key = "Wowzers",
+                        TokenizationMethod = Configuration.Enums.TokenMethodUsed.StandardString
+                    }
+                },
                 ServiceConfigurationInformation = new List<ServiceConfigurationInformation>(),
                 TokenRegexInformation = new List<TokenRegexInformation>()
             };

@@ -52,7 +52,7 @@ namespace TokenizationService.Core.API
                     {
                         ValidateIssuer = true,
                         ValidIssuer = "https://sts.windows.net/d8e58558-f723-4498-847d-a4f6802171a5/", // replace with your issuer URL
-                        ValidateIssuerSigningKey = false,
+                        ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-signing-key")), // replace with your signing key
                         ValidateLifetime = true
                     };
