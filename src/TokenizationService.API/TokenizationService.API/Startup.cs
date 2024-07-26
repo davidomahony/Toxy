@@ -1,28 +1,20 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Handlers;
 using TokenizationService.Core.API.Repositories;
 using TokenizationService.Core.API.Services;
+using TokenizationService.Core.API.Services.Encryption;
 using TokenizationService.Core.API.Services.EncryptionServices;
+using TokenizationService.Core.API.Services.Tokenization;
 
 namespace TokenizationService.Core.API
 {
     public class Startup
     {
-        private IConfiguration configuration;
-
-        public Startup(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -31,9 +23,15 @@ namespace TokenizationService.Core.API
             services.AddScoped<IEngineService, EngineService>();
             services.AddScoped<IEncryptionProvider, EncryptionProvider>();
             services.AddScoped<ITokenParser, TokenParser>();
+
             services.AddScoped<IEncryptionService, DesEncryptionService>();
             services.AddScoped<IEncryptionService, RsaEncryptionService>();
             services.AddScoped<IEncryptionService, AesEncryptionService>();
+
+            services.AddScoped<ITokenizerService, TokenizerService>();
+            services.AddScoped<IDetokenizerService, DetokenizerServiceice>();
+
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 

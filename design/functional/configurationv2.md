@@ -58,8 +58,8 @@ Previous configuration was too messy, it needs to be simplified
     "tokenizationMethods":
     [
         {
-            "name": "string",
-            "id": "guid",
+            "name": "string", // friendly name
+            "id": "int", // used to identify tokens
 
             "key" : "string", // string stored in key vault
             "salt": "string", // string stored in key vault
@@ -92,3 +92,14 @@ Previous configuration was too messy, it needs to be simplified
 }
 
 ```
+
+
+## Technology to use
+
+I am stuck between Postgres or Mongo
+
+- Postgres
+Look this configuration is not going to scale, perhaps a basic postgres table would take it. And it would give me the option of having some json strings as columns to give me an element of unstructured data, as a few unknowns still
+
+- Mongo
+Look easy to use unstructured and I have it more or less done already. I really dislike doing double reads to get the value I just updated. Would have to do it with Postgres too. But getting the sense I am using a hammer where to do the job of a sewing needle.

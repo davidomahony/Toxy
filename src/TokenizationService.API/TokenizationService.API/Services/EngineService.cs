@@ -1,115 +1,40 @@
-﻿using TokenizationService.API.Repositories;
-using TokenizationService.Configuration.Models;
+﻿using TokenizationService.Configuration.Models;
 using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Models;
-using TokenizationService.Core.API.Repositories;
-using static MongoDB.Driver.WriteConcern;
+using TokenizationService.Core.API.Services.Tokenization;
 
 namespace TokenizationService.Core.API.Services
 {
     public class EngineService : IEngineService
     {
-        private readonly IGenericTokenRepository tokenRepository;
-        private readonly ITokenServiceGenerator tokenGenerator;
-        private readonly IEncryptionProvider encryptionProvider;
-        private readonly ITokenParser tokenParser;
+        private readonly ITokenizerService tokenizationService;
+        private readonly IDetokenizerService detokenizationService;
         private readonly IConfigurationRepository<TenantConfiguration> tenantConfiguration;
 
-        public EngineService(
-            IGenericTokenRepository tokenRepository,
-            ITokenServiceGenerator tokenGenerator,
-            IEncryptionProvider encryptionProvider,
-            ITokenParser tokenParser,
-            IConfigurationRepository<TenantConfiguration> tenantConfiguration)
+        public EngineService(ITokenizerService tokenizationService, IDetokenizerService detokenizationService, IConfigurationRepository<TenantConfiguration> tenantConfiguration)
         {
-            this.tokenRepository = tokenRepository;
-            this.tokenGenerator = tokenGenerator;
-            this.encryptionProvider = encryptionProvider;
-            this.tokenParser = tokenParser;
+            this.tokenizationService = tokenizationService;
+            this.detokenizationService = detokenizationService;
             this.tenantConfiguration = tenantConfiguration;
         }
 
-        public async Task<TokenizationInformation[]> GenerateTokens(TokenizationInformation[] values, string clientId)
+        public async Task<TokenizationInformation[]> TokenizeClearValues(TokenizationInformation[] values, string clientId)
         {
-            var result = new TokenizationInformation[values.Length];
             var config = await this.tenantConfiguration.GetConfigurationAsync(clientId);
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
-            for (int i = 0; i < values.Length; i++)
-                result[i] = await this.GenerateSingleToken(values[i], config);
-
-            return result;
+            return await this.tokenizationService.Tokenize(values, config);
         }
 
-        public async Task<DetokenizationInformation[]> FetchTokenValuesAsync(DetokenizationInformation[] tokens, string clientId)
+        public async Task<DetokenizationInformation[]> DetokenizeTokenValues(DetokenizationInformation[] tokens, string clientId)
         {
-            var result = new DetokenizationInformation[tokens.Length];
             var config = await this.tenantConfiguration.GetConfigurationAsync(clientId);
             if (config == null)
                 throw new InvalidOperationException("Unable to locate configuration for tokenization");
 
-            for (int i = 0; i < tokens.Length; i++)
-                result[i] = await this.GenerateTranslationResultAsync(tokens[i], config);
-
-            return result;
-        }
-
-
-        private async Task<TokenizationInformation> GenerateSingleToken(TokenizationInformation value, TenantConfiguration tenantConfiguration)
-        {
-            var result = new TokenizationInformation()
-            {
-                TokenValue = string.Empty,
-                TokenIdentifier = value.TokenIdentifier
-            };
-
-            var encryptedValue = await this.encryptionProvider.EncryptString(value.TokenValue, value.TokenIdentifier, tenantConfiguration);
-            var existingToken = await this.tokenRepository.GetTokenWithValueAsync(encryptedValue, value.TokenIdentifier);
-            if (existingToken != null)
-            {
-                result.TokenValue = existingToken.Token;
-                return result;
-            }
-
-            // i really dont like using tuples remove me later
-            var newToken = await this.tokenGenerator.GenerateNewToken(value, tenantConfiguration);
-            result.TokenValue = newToken.TokenValue;
-
-            // Boom
-            await this.tokenRepository.CreateAsync(
-                new TokenObject
-                {
-                    EncryptedValue = encryptedValue,
-                    Count = newToken.TokenCount,
-                    Token = newToken.TokenValue
-                }, value.TokenIdentifier);
-
-            return result;
-        }
-
-        private async Task<DetokenizationInformation> GenerateTranslationResultAsync(DetokenizationInformation value, TenantConfiguration tenantConfiguration)
-        {
-            var result = new DetokenizationInformation()
-            {
-                TokenValue =  string.Empty,
-                TokenIdentifier = value.TokenIdentifier
-            };
-
-            var info = await this.tokenParser.ParseToken(value.TokenValue, value.TokenIdentifier, tenantConfiguration);
-
-            // I actually need to detect which method it used from the pad byte
-            // I need to have a repository per token type, this should then detect the correct token repository to choose
-            // perhaps the tenant config generates terraform?
-            var existingToken = await this.tokenRepository.ReadAsync(value.TokenValue, value.TokenIdentifier);
-
-            if (existingToken != null)
-            {
-                var clear = await this.encryptionProvider.DecryptString(existingToken.EncryptedValue, info.TokenIdentifier, tenantConfiguration);
-                result.TokenValue = clear;
-            }
-
-            return result;
+            return await this.detokenizationService.Detokenize(tokens, config);
         }
     }
+
 }

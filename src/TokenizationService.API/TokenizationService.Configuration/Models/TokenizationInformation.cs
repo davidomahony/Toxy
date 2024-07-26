@@ -8,6 +8,8 @@ namespace TokenizationService.Configuration.Models
     [BsonIgnoreExtraElements]
     public class TokenizationConfigurationInformation : BaseConfigurationObject
     {
+        public int Identifier { get; set; }
+
         public EncryptionType EncryptionType { get; set; }
 
         public TokenMethodUsed TokenizationMethod { get; set; }

@@ -1,7 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using TokenizationService.API.Repositories;
 using TokenizationService.Configuration.Models;
-using TokenizationService.Configuration.Repository;
 using TokenizationService.Core.API.Models;
 
 namespace TokenizationService.Core.API.Services
@@ -17,13 +15,13 @@ namespace TokenizationService.Core.API.Services
             if (tokenizationType == null)
                 throw new InvalidOperationException("Unable to locate tokenization method");
 
-            var regexInfo = tenantConfiguration.TokenRegexInformation.FirstOrDefault(itm => itm.TokenizationMethodUsed == tokenizationType.TokenizationMethod);
-            if (regexInfo == null)
-                throw new InvalidOperationException("Unable to locate disection pattern");
+            //var regexInfo = tenantConfiguration.TokenRegexInformation.FirstOrDefault(itm => itm.TokenizationMethodUsed == tokenizationType.TokenizationMethod);
+            //if (regexInfo == null)
+            //    throw new InvalidOperationException("Unable to locate disection pattern");
          //   string pattern = @"(-)(\w{2})(.*?)(-\*)"; // this needs to be loaded from cofig
 
             var info = new TokenParserInformation();
-            Match match = Regex.Match(token, regexInfo.TokenRegexDetector);
+            Match match = Regex.Match(token, "");
             if (match.Success)
             {
                 info.PreWrappe =  match.Groups[1].Value;

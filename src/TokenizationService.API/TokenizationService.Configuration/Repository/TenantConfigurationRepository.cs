@@ -75,7 +75,7 @@ namespace TokenizationService.Configuration.Repository
                 .Set(u => u.IsActive, configurationToUpdate.IsActive)
                 .Set(u => u.TokenizationInformation, configurationToUpdate.TokenizationInformation)
                 .Set(u => u.ServiceConfigurationInformation, configurationToUpdate.ServiceConfigurationInformation)
-                .Set(u => u.TokenRegexInformation, configurationToUpdate.TokenRegexInformation)
+                //.Set(u => u.TokenRegexInformation, configurationToUpdate.TokenRegexInformation)
                 .Set(u => u.Created, configurationToUpdate.Created);
 
             await this.collection.UpdateOneAsync(filter, updateDefinition);

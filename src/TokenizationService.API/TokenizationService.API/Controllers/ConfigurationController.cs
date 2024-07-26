@@ -70,13 +70,13 @@ namespace TokenizationService.Core.API.Controllers
                 newConfiguration.TokenizationInformation = addTenantConfiguration.TokenizationInformation
                     .Select(itm => this.Translate(itm));
 
-            if (addTenantConfiguration.TokenRegexInformation != null)
-                newConfiguration.TokenRegexInformation = addTenantConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
-                {
-                    TokenRegexDetector = itm.TokenRegexDetector,
-                    TokenizationMethodUsed = itm.TokenMethodUsed,
-                    TokenPartDisector = itm.TokenPartDisector
-                });
+            //if (addTenantConfiguration.TokenRegexInformation != null)
+            //    newConfiguration.TokenRegexInformation = addTenantConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
+            //    {
+            //        TokenRegexDetector = itm.TokenRegexDetector,
+            //        TokenizationMethodUsed = itm.TokenMethodUsed,
+            //        TokenPartDisector = itm.TokenPartDisector
+            //    });
 
             var result = await this.repository.AddConfiguration(newConfiguration);
 
@@ -104,13 +104,13 @@ namespace TokenizationService.Core.API.Controllers
                     .Select(itm => this.Translate(itm));
             else existing.TokenizationInformation = null;
 
-            if (modifiedConfiguration.TokenRegexInformation != null)
-                existing.TokenRegexInformation = modifiedConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
-                {
-                    TokenRegexDetector = itm.TokenRegexDetector,
-                    TokenizationMethodUsed = itm.TokenMethodUsed,
-                    TokenPartDisector = itm.TokenPartDisector
-                });
+            //if (modifiedConfiguration.TokenRegexInformation != null)
+            //    existing.TokenRegexInformation = modifiedConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
+            //    {
+            //        TokenRegexDetector = itm.TokenRegexDetector,
+            //        TokenizationMethodUsed = itm.TokenMethodUsed,
+            //        TokenPartDisector = itm.TokenPartDisector
+            //    });
 
             var result = await this.repository.UpdateConfiguration(id, existing);
 
@@ -125,7 +125,7 @@ namespace TokenizationService.Core.API.Controllers
                 TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
                 Salt = tokenizationInformationDto.Salt,
                 Key = tokenizationInformationDto.Key,
-                DataType = tokenizationInformationDto.DataType,
+               // DataType = tokenizationInformationDto.DataType,
                 PreWrapper = tokenizationInformationDto.PreWrapper,
                 PostWrapper = tokenizationInformationDto.PostWrapper,
                 PadIdentifier = tokenizationInformationDto.PadIdentifier,

@@ -24,19 +24,22 @@ namespace TokenizationService.Core.API.ServiceTests.Mocks
                 {
                     new TokenizationConfigurationInformation()
                     {
-                        PadIdentifier = "a",
-                        DataType = "String",
+                        Name = "TestOne",
+                        Identifier = 1,
+
+                        Key = "Wowzers",
                         Salt = "3",
                         EncryptionType = Enums.Configuration.EncryptionType.RSA,
+                        TokenizationMethod = Configuration.Enums.TokenMethodUsed.StandardString,
+
+                        PadIdentifier = "a",
                         PreWrapper = "cat",
                         PostWrapper = "cas",
-                        Name = "TestOne",
-                        Key = "Wowzers",
-                        TokenizationMethod = Configuration.Enums.TokenMethodUsed.StandardString
+                        TokenDetectorRegex = "cas",
+                        TokenParsingRegex = "cas",
                     }
                 },
                 ServiceConfigurationInformation = new List<ServiceConfigurationInformation>(),
-                TokenRegexInformation = new List<TokenRegexInformation>()
             };
 
             this.tenantConfigurations.Add(testGet);
