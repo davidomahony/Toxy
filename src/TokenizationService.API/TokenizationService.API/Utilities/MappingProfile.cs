@@ -11,7 +11,6 @@ namespace TokenizationService.Core.API.Utilities
             CreateMap<TenantConfiguration, TenantConfigurationDto>().ReverseMap();
             CreateMap<ServiceConfigurationInformation, ServiceConfigurationInformationDto>().ReverseMap();
             CreateMap<TokenizationConfigurationInformation, TokenizationInformationDto>().ReverseMap();
-            CreateMap<TokenRegexInformation, TokenRegexInformationDto>().ReverseMap();
         }
     }
 }

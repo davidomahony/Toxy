@@ -70,14 +70,6 @@ namespace TokenizationService.Core.API.Controllers
                 newConfiguration.TokenizationInformation = addTenantConfiguration.TokenizationInformation
                     .Select(itm => this.Translate(itm));
 
-            //if (addTenantConfiguration.TokenRegexInformation != null)
-            //    newConfiguration.TokenRegexInformation = addTenantConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
-            //    {
-            //        TokenRegexDetector = itm.TokenRegexDetector,
-            //        TokenizationMethodUsed = itm.TokenMethodUsed,
-            //        TokenPartDisector = itm.TokenPartDisector
-            //    });
-
             var result = await this.repository.AddConfiguration(newConfiguration);
 
             return new OkObjectResult(result);
@@ -104,14 +96,6 @@ namespace TokenizationService.Core.API.Controllers
                     .Select(itm => this.Translate(itm));
             else existing.TokenizationInformation = null;
 
-            //if (modifiedConfiguration.TokenRegexInformation != null)
-            //    existing.TokenRegexInformation = modifiedConfiguration.TokenRegexInformation.Select(itm => new TokenRegexInformation()
-            //    {
-            //        TokenRegexDetector = itm.TokenRegexDetector,
-            //        TokenizationMethodUsed = itm.TokenMethodUsed,
-            //        TokenPartDisector = itm.TokenPartDisector
-            //    });
-
             var result = await this.repository.UpdateConfiguration(id, existing);
 
             return new OkObjectResult(result);
@@ -121,16 +105,20 @@ namespace TokenizationService.Core.API.Controllers
             => new TokenizationConfigurationInformation()
             {
                 Name = tokenizationInformationDto.Name,
+                Identifier = tokenizationInformationDto.Identifier,
+
                 EncryptionType = tokenizationInformationDto.EncryptionType,
                 TokenizationMethod = tokenizationInformationDto.TokenizationMethod,
                 Salt = tokenizationInformationDto.Salt,
                 Key = tokenizationInformationDto.Key,
-               // DataType = tokenizationInformationDto.DataType,
+
                 PreWrapper = tokenizationInformationDto.PreWrapper,
                 PostWrapper = tokenizationInformationDto.PostWrapper,
                 PadIdentifier = tokenizationInformationDto.PadIdentifier,
+                TokenDetectorRegex = tokenizationInformationDto.TokenDetectorRegex,
+                TokenParsingRegex = tokenizationInformationDto.TokenParsingRegex,
+
                 IsActive = tokenizationInformationDto.IsActive,
-                Tags = tokenizationInformationDto.Tags,
             };
 
         private ServiceConfigurationInformation Translate(ServiceConfigurationInformationDto serviceConfigurationInformation)

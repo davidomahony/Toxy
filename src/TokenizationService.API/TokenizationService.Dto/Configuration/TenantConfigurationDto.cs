@@ -24,8 +24,6 @@ namespace TokenizationService.Dto.Configuration
 
         public IEnumerable<TokenizationInformationDto>? TokenizationInformation { get; set; }
 
-        public IEnumerable<TokenRegexInformationDto>? TokenRegexInformation { get; set; }
-
         public bool IsActive { get; set; }
     }
 }
